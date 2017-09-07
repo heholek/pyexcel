@@ -88,10 +88,10 @@ And check what do we have::
    >>> isinstance(my_dict, OrderedDict)
    True
    >>> for key, values in my_dict.items():
-   ...     print({str(key): values})
-   {'Coffees': [u'Starbucks Coffee Blonde Roast', u"Dunkin' Donuts Coffee with Turbo Shot", u'Starbucks Coffee Pike Place Roast', u'Panera Coffee Light Roast']}
-   {'Serving Size': [u'venti(20 oz)', u'large(20 oz.)', u'grande(16 oz.)', u'regular(16 oz.)']}
-   {'Caffeine (mg)': [475, 398, 310, 300]}
+   ...     print(key + " : " + ','.join([str(item) for item in values]))
+   Coffees : Starbucks Coffee Blonde Roast,Dunkin' Donuts Coffee with Turbo Shot,Starbucks Coffee Pike Place Roast,Panera Coffee Light Roast
+   Serving Size : venti(20 oz),large(20 oz.),grande(16 oz.),regular(16 oz.)
+   Caffeine (mg) : 475,398,310,300
 
 Please note that my_dict is an OrderedDict.
 
