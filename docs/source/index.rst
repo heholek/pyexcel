@@ -254,8 +254,8 @@ Tutorial
 
    quickstart
    two-liners
-   tutorial_file
    webdev
+   tutorial_file
    sheet
    book
    database

@@ -1,4 +1,4 @@
-Excel data hanlding in web development
+For web developer
 ========================================
 
 The following libraries are written to facilitate the daily import and export of excel data.
