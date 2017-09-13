@@ -6,4 +6,4 @@ ordereddict;python_version<"2.7"
 weakrefset;python_version<"2.7"
 lxml==3.4.4;platform_python_implementation=="PyPy"
 pyexcel-xls==0.4.1
-pyexcel-xlsx==0.4.2
+pyexcel-xlsx==0.4.1
