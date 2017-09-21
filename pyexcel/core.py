@@ -185,6 +185,8 @@ def iget_records(custom_headers=None, **keywords):
     footprint but requires the headers to be in the first row. And the
     data matrix should be of equal length. It should consume less memory
     and should work well with large files.
+
+    custom_headers could have more headers than existing ones.
     """
     sheet_stream = sources.get_sheet_stream(on_demand=True, **keywords)
     headers = None
@@ -198,7 +200,8 @@ def iget_records(custom_headers=None, **keywords):
                     headers, row, fillvalue=constants.DEFAULT_NA))
                 ordered_dict = OrderedDict()
                 for name in custom_headers:
-                    ordered_dict[name] = tmp_dict[name]
+                    ordered_dict[name] = tmp_dict.get(
+                        name, constants.DEFAULT_NA)
                 yield ordered_dict
             else:
                 # default order
