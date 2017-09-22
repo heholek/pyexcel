@@ -13,12 +13,23 @@ Planned
 #. suppert missing pandas io features: use custom boolean values, write stylish
    spreadsheets.
 
-Updated
+Added
 ********************************************************************************
 
 #. implemented __len__ for pyexcel.Book and pyexcel.Sheet. Suddenly, Sheet
    could be a argument of Sheet. So Sheet(Sheet([[1, 2]])) works.
 
+Updated
+********************************************************************************
+
+#. `custom_headers` for iget_records could have extra headers that does not
+   exist in the current excel sheet. It helps header normalization across
+   multiple excel sheets that has various headers. In this situation, what you
+   may have done is to get a union of all headers in all excel sheets, then
+   try get records from each sheet and merge all.
+
+#. `pyexcel.Sheet.to_records()`, `pyexcel.get_records`, `pyexcel.Sheet.records`
+   returns a generator instead of a static array of dictionary.
 
 0.5.3 - 01-08-2017
 --------------------------------------------------------------------------------

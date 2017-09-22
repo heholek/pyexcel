@@ -308,7 +308,7 @@ class TestGetRecords:
         testfile = "testfile.xls"
         sheet.save_as(testfile)
         result = pe.get_records(file_name=testfile)
-        eq_(result, [
+        eq_(list(result), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
         ])
@@ -323,7 +323,7 @@ class TestGetRecords:
         content = pe.save_as(dest_file_type="xls", array=data)
         records = pe.get_records(file_content=content.getvalue(),
                                  file_type="xls")
-        eq_(records, [
+        eq_(list(records), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
         ])
@@ -335,7 +335,7 @@ class TestGetRecords:
             [4, 5, 6]
         ]
         result = pe.get_records(array=data)
-        eq_(result, [
+        eq_(list(result), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
         ])
@@ -347,7 +347,7 @@ class TestGetRecords:
             "Z": [3, 6]
         }
         result = pe.get_records(adict=data)
-        eq_(result, [
+        eq_(list(result), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
         ])
@@ -358,7 +358,7 @@ class TestGetRecords:
             {"X": 4, "Y": 5, "Z": 6}
         ]
         result = pe.get_records(records=data)
-        eq_(result, [
+        eq_(list(result), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
         ])
@@ -723,34 +723,34 @@ class TestSQL:
 
     def test_get_sheet_from_sql(self):
         sheet = pe.get_sheet(session=Session(), table=Signature)
-        assert sheet.to_array() == [
+        eq_(sheet.array, [
             ["X", "Y", "Z"],
             [1, 2, 3],
             [4, 5, 6]
-        ]
+        ])
 
     def test_get_array_from_sql(self):
         array = pe.get_array(session=Session(), table=Signature)
-        assert array == [
+        eq_(array, [
             ["X", "Y", "Z"],
             [1, 2, 3],
             [4, 5, 6]
-        ]
+        ])
 
     def test_get_dict_from_sql(self):
         adict = pe.get_dict(session=Session(), table=Signature)
-        assert adict == {
+        eq_(adict, {
             "X": [1, 4],
             "Y": [2, 5],
             "Z": [3, 6]
-        }
+        })
 
     def test_get_records_from_sql(self):
         records = pe.get_records(session=Session(), table=Signature)
-        assert records == [
+        eq_(list(records), [
             {"X": 1, "Y": 2, "Z": 3},
             {"X": 4, "Y": 5, "Z": 6}
-        ]
+        ])
 
     def test_get_book_from_sql(self):
         book_dict = pe.get_book_dict(session=Session(),

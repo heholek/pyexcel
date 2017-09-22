@@ -145,7 +145,7 @@ def get_dict(name_columns_by_row=0, **keywords):
 @append_doc(docs.GET_RECORDS)
 def get_records(name_columns_by_row=0, **keywords):
     """
-    Obtain a list of records from an excel source
+    Obtain a generator of a list of records from an excel source
 
     It accepts the same parameters as :meth:`~pyexcel.get_sheet`
     but return a list of dictionary(records) instead.
@@ -181,12 +181,16 @@ def iget_records(custom_headers=None, **keywords):
     """
     Obtain a generator of a list of records from an excel source
 
-    It is similiar to :meth:`pyexcel.get_records` but it has less memory
-    footprint but requires the headers to be in the first row. And the
-    data matrix should be of equal length. It should consume less memory
-    and should work well with large files.
+    It is similiar to :meth:`pyexcel.get_records` but it requires the
+    headers to be in the first row. For csv, tsv, ods using pyexcel-odsr,
+    ndjson and html, this function will allow you to consume data while
+    it is reading the data so it has less memory footprint. But for xls, xlsx,
+    and ods using pyexcel-ods or pyexcel-ods3, you may not experience
+    any benefit because the underneath driver reads the whole sheet into
+    memory before serving data. So for the first group, it works well with
+    large files.
 
-    custom_headers could have more headers than existing ones.
+    Since 0.6.0, `custom_headers` could have more headers than existing ones.
     """
     sheet_stream = sources.get_sheet_stream(on_demand=True, **keywords)
     headers = None

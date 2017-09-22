@@ -358,7 +358,6 @@ class Sheet(Matrix):
         per each row. This is particularly helpful for
         database operations.
         """
-        ret = []
         if len(self.colnames) > 0:
             if custom_headers:
                 headers = custom_headers
@@ -366,7 +365,7 @@ class Sheet(Matrix):
                 headers = self.colnames
             for row in self.rows():
                 the_dict = compact.OrderedDict(zip(headers, row))
-                ret.append(the_dict)
+                yield the_dict
         elif len(self.rownames) > 0:
             if custom_headers:
                 headers = custom_headers
@@ -374,11 +373,10 @@ class Sheet(Matrix):
                 headers = self.rownames
             for column in self.columns():
                 the_dict = compact.OrderedDict(zip(headers, column))
-                ret.append(the_dict)
+                yield the_dict
         else:
             raise ValueError(
                 constants.MESSAGE_DATA_ERROR_NO_SERIES)
-        return ret
 
     def to_dict(self, row=False):
         """Returns a dictionary"""
