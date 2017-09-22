@@ -174,7 +174,7 @@ For compatibility tables of pyexcel-io plugins, please click `here <http://pyexc
                  SpreadsheetML File Format. [#f2]_
     xlsm         an MS-Excel Macro-Enabled Workbook file
     ods          open document spreadsheet
-	fods         flat open document spreadsheet
+    fods         flat open document spreadsheet
     json         java script object notation
     html         html table of the data structure
     simple       simple presentation
@@ -255,7 +255,7 @@ Tutorial
    quickstart
    two-liners
    webdev
-   tutorial_file
+   renderers
    sheet
    book
    database

@@ -11,11 +11,11 @@ Django         `django-excel`_
 Pyramid        `pyramid-excel`_
 ============== ============================
 
-.. _Flask-Excel: https://github.com/chfw/Flask-Excel
-.. _django-excel: https://github.com/chfw/django-excel
-.. _pyramid-excel: https://github.com/chfw/pyramid-excel
+.. _Flask-Excel: https://github.com/pyexcel-webwares/Flask-Excel
+.. _django-excel: https://github.com/pyexcel-webwares/django-excel
+.. _pyramid-excel: https://github.com/pyexcel-webwares/pyramid-excel
 
-And you may make your own by using `pyexcel-webio <https://github.com/chfw/pyexcel-webio>`_
+And you may make your own by using `pyexcel-webio <https://github.com/pyexcel-webwares/pyexcel-webio>`_
 
 
 Read any supported excel and respond its content in json
