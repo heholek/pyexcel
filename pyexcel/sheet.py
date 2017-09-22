@@ -7,6 +7,8 @@
     :copyright: (c) 2014-2017 by Onni Software Ltd.
     :license: New BSD License, see LICENSE for more details
 """
+from collections import defaultdict
+
 import pyexcel._compact as compact
 import pyexcel.constants as constants
 from pyexcel.internal.sheets.matrix import Matrix
@@ -152,6 +154,51 @@ class Sheet(Matrix):
         """
         self.__row_names = make_names_unique(self.column_at(column_index))
         del self.column[column_index]
+
+    def group_rows_by_column(self, column_index_or_name):
+        """Group rows with similiar column into a two dimensional array.
+
+        Example::
+
+            >>> import pyexcel as p
+            >>> sample_data = [
+            ...     ["22/09/2017", "morning"],
+            ...     ["22/09/2017", "afternoon"],
+            ...     ["23/09/2017", "morning"],
+            ...     ["23/09/2017", "afternoon"]
+            ... ]
+            >>> sheet = p.Sheet(sample_data)
+            >>> sheet.group_rows_by_column(0)
+            22/09/2017:
+            +------------+-----------+
+            | 22/09/2017 | morning   |
+            +------------+-----------+
+            | 22/09/2017 | afternoon |
+            +------------+-----------+
+            23/09/2017:
+            +------------+-----------+
+            | 23/09/2017 | morning   |
+            +------------+-----------+
+            | 23/09/2017 | afternoon |
+            +------------+-----------+
+
+        :returns: an instance of a Book
+        """
+        from pyexcel import Book
+        groups = defaultdict(list)
+
+        if isinstance(column_index_or_name, int):
+            for row in self.to_array():
+                groups[row[column_index_or_name]].append(row)
+        else:
+            if len(self.colnames) == 0:
+                self.name_columns_by_row(0)
+            column_index = self.colnames.index(column_index_or_name)
+            for row in self.rows():
+                if len(groups[row[column_index]]) == 0:
+                    groups[row[column_index]].append(self.colnames)
+                groups[row[column_index]].append(row)
+        return Book(groups)
 
     def top(self, lines=5):
         """

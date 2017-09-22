@@ -18,6 +18,8 @@ Added
 
 #. implemented __len__ for pyexcel.Book and pyexcel.Sheet. Suddenly, Sheet
    could be a argument of Sheet. So Sheet(Sheet([[1, 2]])) works.
+#. pyexcel.Sheet.group_rows_by_column(), helps categorize similiar fields into
+   a book.
 
 Updated
 ********************************************************************************

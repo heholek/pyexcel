@@ -2,6 +2,7 @@ from pyexcel import Sheet
 from pyexcel import load_from_dict, load_from_records
 from _compact import OrderedDict
 from nose.tools import raises, eq_
+from textwrap import dedent
 import copy
 
 
@@ -103,6 +104,61 @@ class TestFormatter:
     def test_empty_paste(self):
         s = Sheet(self.data)
         s.paste((1, 2))
+
+
+class TestGroupBy:
+    def setUp(self):
+        self.sample_data = [
+            ["date", "am/pm"],
+            ["22/09/2017", "morning"],
+            ["22/09/2017", "afternoon"],
+            ["23/09/2017", "morning"],
+            ["23/09/2017", "afternoon"]
+        ]
+
+    def test_column_name(self):
+        sheet = Sheet(self.sample_data)
+        book = sheet.group_rows_by_column("date")
+        expected = dedent("""
+        22/09/2017:
+        +------------+-----------+
+        | date       | am/pm     |
+        +------------+-----------+
+        | 22/09/2017 | morning   |
+        +------------+-----------+
+        | 22/09/2017 | afternoon |
+        +------------+-----------+
+        23/09/2017:
+        +------------+-----------+
+        | date       | am/pm     |
+        +------------+-----------+
+        | 23/09/2017 | morning   |
+        +------------+-----------+
+        | 23/09/2017 | afternoon |
+        +------------+-----------+""").strip('\n')
+        eq_(str(book), expected)
+
+    def test_column_index(self):
+        sheet = Sheet(self.sample_data)
+        book = sheet.group_rows_by_column(0)
+        expected = dedent("""
+        22/09/2017:
+        +------------+-----------+
+        | 22/09/2017 | morning   |
+        +------------+-----------+
+        | 22/09/2017 | afternoon |
+        +------------+-----------+
+        23/09/2017:
+        +------------+-----------+
+        | 23/09/2017 | morning   |
+        +------------+-----------+
+        | 23/09/2017 | afternoon |
+        +------------+-----------+
+        date:
+        +------+-------+
+        | date | am/pm |
+        +------+-------+""").strip('\n')
+        eq_(str(book), expected)
 
 
 class TestSheetColumn:
