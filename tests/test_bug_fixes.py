@@ -222,7 +222,7 @@ def test_issue_76():
     tsv_stream.write('1\t2\t3\t4\n')
     tsv_stream.seek(0)
     sheet = p.get_sheet(file_stream=tsv_stream, file_type='csv',
-                         delimiter='\t')
+                        delimiter='\t')
     data = [
         [1, 2, 3, 4],
         [1, 2, 3, 4]
