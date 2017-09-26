@@ -20,3 +20,4 @@ targets:
   - test.bat: test.bat
   - .gitignore: commons-gitignore.jj2
   - "docs/source/index.rst": "docs/source/index.rst.jj2"
+  - "pyexcel/__version__.py": version.txt

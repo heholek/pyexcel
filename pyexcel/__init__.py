@@ -43,3 +43,4 @@ from .deprecated import (
     ColumnSeriesReader,
     BookReader
 )
+from .__version__ import __version__
