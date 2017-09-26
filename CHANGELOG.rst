@@ -20,6 +20,9 @@ Added
    could be a argument of Sheet. So Sheet(Sheet([[1, 2]])) works.
 #. pyexcel.Sheet.group_rows_by_column(), helps categorize similiar fields into
    a book.
+#. `__version__` at module level is finally available
+#. Presentation won't break if there is an object (list, dict). Un-recognized
+   type will be json dumped.
 
 Updated
 ********************************************************************************
