@@ -21,3 +21,4 @@ targets:
   - .gitignore: commons-gitignore.jj2
   - "docs/source/index.rst": "docs/source/index.rst.jj2"
   - "pyexcel/__version__.py": version.txt
+  - "docs/source/iodrivers.rst": "docs/source/iodrivers.rst.jj2"

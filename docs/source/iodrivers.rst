@@ -1,0 +1,97 @@
+Pyexcel-io Plugin guide
+===============================
+
+There has been a lot of plugins for reading and writing a file types. Here is a guide
+for you to choose them.
+
+.. _file-format-list:
+.. _a-map-of-plugins-and-file-formats:
+
+.. table:: A list of file formats supported by external plugins
+
+   ======================== ======================= ================= ==================
+   Package name              Supported file formats  Dependencies     Python versions
+   ======================== ======================= ================= ==================
+   `pyexcel-io`_            csv, csvz [#f1]_, tsv,                    2.6, 2.7, 3.3,
+                            tsvz [#f2]_                               3.4, 3.5, 3.6
+                                                                      pypy
+   `pyexcel-xls`_           xls, xlsx(read only),   `xlrd`_,          same as above
+                            xlsm(read only)         `xlwt`_
+   `pyexcel-xlsx`_          xlsx                    `openpyxl`_       same as above
+   `pyexcel-ods3`_          ods                     `pyexcel-ezodf`_, 2.6, 2.7, 3.3, 3.4
+                                                    lxml              3.5, 3.6
+   `pyexcel-ods`_           ods                     `odfpy`_          same as above
+   ======================== ======================= ================= ==================
+
+.. table:: Dedicated file reader and writers
+
+   ======================== ======================= ================= ==================
+   Package name              Supported file formats  Dependencies     Python versions
+   ======================== ======================= ================= ==================
+   `pyexcel-xlsxw`_         xlsx(write only)        `XlsxWriter`_     Python 2 and 3
+   `pyexcel-odsr`_          read only for ods, fods lxml              same as above
+   `pyexcel-htmlr`_         html(read only)         lxml,html5lib     same as above
+   ======================== ======================= ================= ==================
+
+
+.. _pyexcel-io: https://github.com/pyexcel/pyexcel-io
+.. _pyexcel-xls: https://github.com/pyexcel/pyexcel-xls
+.. _pyexcel-xlsx: https://github.com/pyexcel/pyexcel-xlsx
+.. _pyexcel-ods: https://github.com/pyexcel/pyexcel-ods
+.. _pyexcel-ods3: https://github.com/pyexcel/pyexcel-ods3
+.. _pyexcel-odsr: https://github.com/pyexcel/pyexcel-odsr
+.. _pyexcel-xlsxw: https://github.com/pyexcel/pyexcel-xlsxw
+.. _pyexcel-htmlr: https://github.com/pyexcel/pyexcel-htmlr
+
+.. _xlrd: https://github.com/python-excel/xlrd
+.. _xlwt: https://github.com/python-excel/xlwt
+.. _openpyxl: https://bitbucket.org/openpyxl/openpyxl
+.. _XlsxWriter: https://github.com/jmcnamara/XlsxWriter
+.. _pyexcel-ezodf: https://github.com/pyexcel/pyexcel-ezodf
+.. _odfpy: https://github.com/eea/odfpy
+
+
+In order to manage the list of plugins installed, you need to use pip to add or remove
+a plugin. When you use virtualenv, you can have different plugins per virtual
+environment. In the situation where you have multiple plugins that does the same thing
+in your environment, you need to tell pyexcel which plugin to use per function call.
+For example, pyexcel-ods and pyexcel-odsr, and you want to get_array to use pyexcel-odsr.
+You need to append get_array(..., library='pyexcel-odsr').
+
+.. rubric:: Footnotes
+
+.. [#f1] zipped csv file
+.. [#f2] zipped tsv file
+
+Read and write with performance
+---------------------------------
+
+Partial reading
+*********************
+
+csv, tsv by `pyexcel-io`_, ods by `pyexcel-odsr`_, html by `pyexcel-htmlr`_ are implemented in partial
+read mode. If you only need first half of the file, the second half of the data will not be read
+into the memory if and only if you use igetters(iget_records, iget_array) and isaveer(isave_as and
+isave_book_as).
+
+Read on demand
+********************
+
+xls by `pyexcel-xls`_ promised to read sheet on demand. It means if you need only one sheet from a
+multi-sheet book, the rest of the sheets in the book will not be read.
+
+
+Streaming write
+*********************
+
+csv, tsv by `pyexce-io`_ can do streaming write.
+
+Write with constant memory
+*********************************
+
+xlsx by `pyexcel-xlsxw`_ can write big data with constant memory consumption.
+
+
+
+
+
