@@ -139,13 +139,13 @@ class TestCSVReaderDialect:
                    array=table)
 
     def test_delimiter(self):
-        f = open(self.testfile)
-        content = '1:2:3:45:6:7:89:10:11:12'
-        expected = ''
-        for l in f:
-            l = l.rstrip()
-            expected += l
-        assert expected == content
+        with open(self.testfile) as test_file:
+            content = '1:2:3:45:6:7:89:10:11:12'
+            expected = ''
+            for line in test_file:
+                line = line.rstrip()
+                expected += line
+            eq_(expected, content)
 
     def test_read_delimiter(self):
         r = pe.Reader(self.testfile, delimiter=":")
