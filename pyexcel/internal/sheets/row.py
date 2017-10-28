@@ -156,6 +156,17 @@ class Row(utils.CommonPropertyAmongRowNColumn):
         else:
             self._ref.delete_rows([locator])
 
+    def __getattr__(self, attr):
+        """
+        Refer to sheet.row.name
+        """
+        the_attr = attr
+        if attr not in self._ref.rownames:
+            the_attr = the_attr.replace('_', ' ')
+            if the_attr not in self._ref.rownames:
+                raise AttributeError("%s is not found" % attr)
+        return self._ref.named_row_at(the_attr)
+
     def _delete_rows_by_content(self, locator):
         to_remove = []
         for index, row in enumerate(self._ref.rows()):

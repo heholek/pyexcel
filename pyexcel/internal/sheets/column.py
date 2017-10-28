@@ -259,6 +259,17 @@ class Column(utils.CommonPropertyAmongRowNColumn):
         self.__iadd__(other)
         return self._ref
 
+    def __getattr__(self, attr):
+        """
+        Refer to sheet.column.name
+        """
+        the_attr = attr
+        if attr not in self._ref.colnames:
+            the_attr = the_attr.replace('_', ' ')
+            if the_attr not in self._ref.colnames:
+                raise AttributeError("%s is not found" % attr)
+        return self._ref.named_column_at(the_attr)
+
     def format(self, column_index=None, formatter=None,
                format_specs=None):
         """Format a column

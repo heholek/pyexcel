@@ -23,6 +23,9 @@ Added
 #. `__version__` at module level is finally available
 #. Presentation won't break if there is an object (list, dict). Un-recognized
    type will be json dumped.
+#. Sheet.column.column_name, Sheet.row.row_name is added to provide a short
+   cut for Sheet.column['column name'], Sheet.row['row name']. In total,
+   4 characters less in typing.
 
 Updated
 ********************************************************************************

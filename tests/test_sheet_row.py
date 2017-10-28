@@ -73,6 +73,11 @@ class TestSheetRow:
         s = s.row + data
         assert s.row["Row 5"] == [10, 11, 12]
 
+    def test_dot_notation(self):
+        s = Sheet(self.data, "test")
+        s.name_rows_by_column(0)
+        eq_(s.row.Row_3, [7, 8, 9])
+
     @raises(TypeError)
     def test_add_wrong_type(self):
         s = Sheet(self.data, "test")

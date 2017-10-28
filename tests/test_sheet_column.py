@@ -34,7 +34,7 @@ class TestSheetColumn:
             "Column 4": [10, 11, 12]
         })
         s = s.column + data
-        eq_(s.column["Column 4"], [10, 11, 12])
+        eq_(s.column.Column_4, [10, 11, 12])
 
     @raises(TypeError)
     def test_add_wrong_type(self):
@@ -95,10 +95,10 @@ class TestSheetColumn2:
     def test_series(self):
         s = Sheet(self.data, "test")
         s.name_columns_by_row(2)
-        assert s.colnames == ["Column 1", "Column 2", "Column 3"]
+        eq_(s.colnames, ["Column 1", "Column 2", "Column 3"])
         custom_columns = ["C1", "C2", "C3"]
         s.colnames = custom_columns
-        assert s.colnames == custom_columns
+        eq_(s.colnames, custom_columns)
 
     def test_series2(self):
         custom_columns = ["C1", "C2", "C3"]
@@ -132,6 +132,11 @@ class TestSheetColumn2:
         )
         s = s.column + data
         assert s.column["Column 4"] == [10, 11, 12]
+
+    def test_dot_notation(self):
+        s = Sheet(self.data, "test")
+        s.name_columns_by_row(2)
+        eq_(s.column.Column_3, [3, 6, 9])
 
     @raises(ValueError)
     def test_delete_named_column(self):
