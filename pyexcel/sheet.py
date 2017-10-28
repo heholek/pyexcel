@@ -14,6 +14,7 @@ import pyexcel.constants as constants
 from pyexcel.internal.sheets.matrix import Matrix
 from pyexcel.internal.sheets.row import Row as NamedRow
 from pyexcel.internal.sheets.column import Column as NamedColumn
+from pyexcel.internal.sheets.columnee import Statis
 
 
 class Sheet(Matrix):
@@ -249,7 +250,7 @@ class Sheet(Matrix):
         if compact.is_string(type(index)):
             index = self.colnames.index(name)
         column_array = self.column_at(index)
-        return column_array
+        return Statis(column_array)
 
     def set_named_column_at(self, name, column_array):
         """

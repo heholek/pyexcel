@@ -16,6 +16,7 @@ import pyexcel.constants as constants
 from pyexcel.internal.core import get_sheet_stream
 from pyexcel.internal.core import save_sheet
 from pyexcel.internal.core import save_book
+from pyexcel.internal.plotter import Plotter
 from pyexcel._compact import append_doc
 import pyexcel.docstrings as docs
 
@@ -242,7 +243,7 @@ class PyexcelObject(object):
         """
         raise NotImplementedError("save to memory is not implemented")
 
-    def plot(self, file_type='svg', **keywords):
+    def plot(self, **keywords):
         """
         Visualize the data
 
@@ -255,16 +256,7 @@ class PyexcelObject(object):
         chart_type:string
            'bar' by default. other chart types are subjected to plugins.
         """
-        memory_content = self.save_to_memory(file_type, **keywords)
-        if file_type in ['png', 'svg', 'jpeg']:
-            # make the signature for jypter notebook
-            def get_content(self):
-                return self.getvalue().decode('utf-8')
-
-            setattr(memory_content,
-                    '_repr_%s_' % file_type,
-                    partial(get_content, memory_content))
-        return memory_content
+        return Plotter(self, **keywords)
 
     def _repr_html_(self):
         return self.html
