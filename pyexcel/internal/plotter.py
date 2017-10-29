@@ -2,27 +2,30 @@ from functools import partial
 
 
 class Plotter(object):
-    def __init__(self, instance, **keywords):
+    def __init__(self, instance):
         self._ref = instance
-        self.__keywords = keywords
 
-    def bar(self):
+    def bar(self, **keywords):
         chart_type = 'bar'
-        return self.__make_echarts_html(chart_type)
+        return self.__make_echarts_html(chart_type, **keywords)
 
-    def bar3d(self):
+    def bar3d(self, **keywords):
         chart_type = 'bar3d'
-        return self.__make_echarts_html(chart_type)
+        return self.__make_echarts_html(chart_type, **keywords)
 
-    def effectscatter(self):
+    def effectscatter(self, **keywords):
         chart_type = 'effectscatter'
-        return self.__make_echarts_html(chart_type)
+        return self.__make_echarts_html(chart_type, **keywords)
 
-    def __make_echarts_html(self, chart_type):
+    def scatter(self, **keywords):
+        chart_type = 'scatter'
+        return self.__make_echarts_html(chart_type, **keywords)
+
+    def __make_echarts_html(self, chart_type, **keywords):
         file_type = 'echarts.html'
         memory_content = self._ref.save_to_memory(
             file_type, title=self._ref.name, chart_type=chart_type,
-            mode='notebook', **self.__keywords)
+            mode='notebook', **keywords)
 
         def get_content(self):
             return self.getvalue().decode('utf-8')
@@ -32,25 +35,25 @@ class Plotter(object):
                 partial(get_content, memory_content))
         return memory_content
 
-    def svg(self):
+    def svg(self, **keywords):
         file_type = 'svg'
-        return self.__make_graphics(file_type)
+        return self.__make_graphics(file_type, **keywords)
 
-    def jpeg(self):
+    def jpeg(self, **keywords):
         file_type = 'svg'
-        return self.__make_graphics(file_type)
+        return self.__make_graphics(file_type, **keywords)
 
-    def png(self):
+    def png(self, **keywords):
         file_type = 'svg'
         return self.__make_graphics(file_type)
 
     def _repr_svg_(self):
         return self.svg()
 
-    def __make_graphics(self, file_type):
+    def __make_graphics(self, file_type, **keywords):
         # make the signature for jypter notebook
         memory_content = self._ref.save_to_memory(
-            file_type, **self.__keywords)
+            file_type, **keywords)
 
         def get_content(self):
             return self.getvalue().decode('utf-8')
