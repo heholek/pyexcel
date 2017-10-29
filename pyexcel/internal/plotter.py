@@ -40,11 +40,11 @@ class Plotter(object):
         return self.__make_graphics(file_type, **keywords)
 
     def jpeg(self, **keywords):
-        file_type = 'svg'
+        file_type = 'jpeg'
         return self.__make_graphics(file_type, **keywords)
 
     def png(self, **keywords):
-        file_type = 'svg'
+        file_type = 'png'
         return self.__make_graphics(file_type)
 
     def _repr_svg_(self):
