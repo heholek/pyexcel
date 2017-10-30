@@ -1,5 +1,7 @@
 from functools import partial
 
+from pyexcel._compact import PY2
+
 
 class Plotter(object):
     def __init__(self, instance):
@@ -27,9 +29,6 @@ class Plotter(object):
             file_type, title=self._ref.name, chart_type=chart_type,
             mode='notebook', **keywords)
 
-        def get_content(self):
-            return self.getvalue().decode('utf-8')
-
         setattr(memory_content,
                 '_repr_html_',
                 partial(get_content, memory_content))
@@ -55,10 +54,14 @@ class Plotter(object):
         memory_content = self._ref.save_to_memory(
             file_type, **keywords)
 
-        def get_content(self):
-            return self.getvalue().decode('utf-8')
-
         setattr(memory_content,
                 '_repr_%s_' % file_type,
                 partial(get_content, memory_content))
         return memory_content
+
+
+def get_content(class_instance):
+    content = class_instance.getvalue()
+    if PY2:
+        content.decode('utf-8')
+        return content
