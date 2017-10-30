@@ -23,6 +23,10 @@ class Plotter(object):
         chart_type = 'effectscatter'
         return self.__make_echarts_html(chart_type, **keywords)
 
+    def wordcloud(self, **keywords):
+        chart_type = 'wordcloud'
+        return self.__make_echarts_html(chart_type, **keywords)
+
     def scatter(self, **keywords):
         chart_type = 'scatter'
         return self.__make_echarts_html(chart_type, **keywords)
