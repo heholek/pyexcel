@@ -19,6 +19,7 @@ from pyexcel.internal.meta import SheetMeta
 from .formatters import to_format
 from .row import Row
 from .column import Column
+from .columnee import Statis
 from . import _shared as utils
 
 
@@ -178,13 +179,12 @@ class Matrix(SheetMeta):
         """
         Gets the data at the specified column
         """
+        cell_array = Statis()
         if index in self.column_range():
-            cell_array = []
             for i in self.row_range():
                 cell_array.append(self.cell_value(i, index))
             return cell_array
         elif index < 0 and utils.abs(index) in self.column_range():
-            cell_array = []
             reverse_index = self.number_of_columns() + index
             for i in self.row_range():
                 cell_array.append(self.cell_value(i, reverse_index))

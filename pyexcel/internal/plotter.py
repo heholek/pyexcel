@@ -7,6 +7,10 @@ class Plotter(object):
     def __init__(self, instance):
         self._ref = instance
 
+    def hist(self, **keywords):
+        chart_type = 'hist'
+        return self.__make_echarts_html(chart_type, **keywords)
+
     def bar(self, **keywords):
         chart_type = 'bar'
         return self.__make_echarts_html(chart_type, **keywords)
