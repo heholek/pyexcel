@@ -31,3 +31,10 @@ def test_effectscatter():
     s = p.get_sheet(records=data)
     s.name_columns_by_row(0)
     assert 'echarts' in s.plot().effectscatter()._repr_html_()
+
+
+def test_histogram():
+    data = [[1, 2, 3, 4, 5, 5, 6, 9, 3, 4, 3]]
+    sheet = p.get_sheet(array=data)
+    sheet.transpose()
+    assert 'histogram' in sheet.column[0].plot().hist()._repr_html_()
