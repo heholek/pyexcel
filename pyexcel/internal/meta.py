@@ -126,6 +126,9 @@ def _annotate_pyexcel_object_attribute(
         input_func=default_importer,
         instance_name="Sheet",
         description=constants.OUT_FILE_TYPE_DOC_STRING):
+    """
+    create custom attributes for each class
+    """
     getter = presenter_func(file_type)
     setter = input_func(file_type)
     file_type_property = property(

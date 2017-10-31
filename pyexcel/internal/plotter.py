@@ -6,32 +6,44 @@ from pyexcel._compact import PY2
 class Plotter(object):
     def __init__(self, instance):
         self._ref = instance
+        try:
+            from pyexcel_echarts.options import CHART_TYPES
 
-    def hist(self, **keywords):
-        chart_type = 'hist'
-        return self.__make_echarts_html(chart_type, **keywords)
+            for key in CHART_TYPES.keys():
+                setattr(self.__class__, key, make_echarts_presenter(key))
+        except ImportError:
+            pass
 
-    def bar(self, **keywords):
-        chart_type = 'bar'
-        return self.__make_echarts_html(chart_type, **keywords)
+        for file_type in ['svg', 'jpeg', 'png']:
+            setattr(self.__class__, file_type, make_graphics(file_type))
 
-    def bar3d(self, **keywords):
-        chart_type = 'bar3d'
-        return self.__make_echarts_html(chart_type, **keywords)
+    def _repr_svg_(self):
+        return self.svg()
 
-    def effectscatter(self, **keywords):
-        chart_type = 'effectscatter'
-        return self.__make_echarts_html(chart_type, **keywords)
 
-    def wordcloud(self, **keywords):
-        chart_type = 'wordcloud'
-        return self.__make_echarts_html(chart_type, **keywords)
+def make_graphics(file_type):
+    def draw_chart_in_file(self, **keywords):
+        # make the signature for jypter notebook
+        memory_content = self._ref.save_to_memory(
+            file_type, **keywords)
 
-    def scatter(self, **keywords):
-        chart_type = 'scatter'
-        return self.__make_echarts_html(chart_type, **keywords)
+        setattr(memory_content,
+                '_repr_%s_' % file_type,
+                partial(get_content, memory_content))
+        return memory_content
+    draw_chart_in_file.__doc__ = "Draw charts in %s format" % file_type
+    return draw_chart_in_file
 
-    def __make_echarts_html(self, chart_type, **keywords):
+
+def get_content(class_instance):
+    content = class_instance.getvalue()
+    if PY2:
+        content.decode('utf-8')
+    return content
+
+
+def make_echarts_presenter(chart_type):
+    def draw_chart(self, **keywords):
         file_type = 'echarts.html'
         memory_content = self._ref.save_to_memory(
             file_type, title=self._ref.name, chart_type=chart_type,
@@ -41,35 +53,5 @@ class Plotter(object):
                 '_repr_html_',
                 partial(get_content, memory_content))
         return memory_content
-
-    def svg(self, **keywords):
-        file_type = 'svg'
-        return self.__make_graphics(file_type, **keywords)
-
-    def jpeg(self, **keywords):
-        file_type = 'jpeg'
-        return self.__make_graphics(file_type, **keywords)
-
-    def png(self, **keywords):
-        file_type = 'png'
-        return self.__make_graphics(file_type)
-
-    def _repr_svg_(self):
-        return self.svg()
-
-    def __make_graphics(self, file_type, **keywords):
-        # make the signature for jypter notebook
-        memory_content = self._ref.save_to_memory(
-            file_type, **keywords)
-
-        setattr(memory_content,
-                '_repr_%s_' % file_type,
-                partial(get_content, memory_content))
-        return memory_content
-
-
-def get_content(class_instance):
-    content = class_instance.getvalue()
-    if PY2:
-        content.decode('utf-8')
-        return content
+    draw_chart.__doc__ = "Draw %s chart" % chart_type
+    return draw_chart
