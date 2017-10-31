@@ -41,12 +41,12 @@ def test_histogram():
 
 
 def test_wordcloud():
-    data= [
+    data = [
         ['pyexcel', 310],
         ['django-excel', 110],
         ['Flask-excel', 90],
         ['pyexcel-io', 14]
     ]
 
-    s=p.Sheet(data)
+    s = p.Sheet(data)
     assert 'wordcloud' in s.plot().wordcloud()._repr_html_()
