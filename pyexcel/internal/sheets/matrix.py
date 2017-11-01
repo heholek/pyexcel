@@ -16,10 +16,10 @@ from functools import partial
 import pyexcel._compact as compact
 import pyexcel.constants as constants
 from pyexcel.internal.meta import SheetMeta
-from .formatters import to_format
-from .row import Row
-from .column import Column
-from .columnee import Statis
+from pyexcel.internal.sheets.formatters import to_format
+from pyexcel.internal.sheets.row import Row
+from pyexcel.internal.sheets.column import Column
+from pyexcel.internal.sheets.extended_list import PyexcelList
 from . import _shared as utils
 
 
@@ -99,9 +99,10 @@ class Matrix(SheetMeta):
         Gets the data at the specified row
         """
         if index in self.row_range():
-            return copy.deepcopy(self.__array[index])
+            return PyexcelList(copy.deepcopy(self.__array[index]))
         elif index < 0 and utils.abs(index) in self.row_range():
-            return copy.deepcopy(self.__array[index+self.number_of_rows()])
+            return PyexcelList(copy.deepcopy(
+                self.__array[index+self.number_of_rows()]))
         else:
             raise IndexError(constants.MESSAGE_INDEX_OUT_OF_RANGE)
 
@@ -179,7 +180,7 @@ class Matrix(SheetMeta):
         """
         Gets the data at the specified column
         """
-        cell_array = Statis()
+        cell_array = PyexcelList()
         if index in self.column_range():
             for i in self.row_range():
                 cell_array.append(self.cell_value(i, index))

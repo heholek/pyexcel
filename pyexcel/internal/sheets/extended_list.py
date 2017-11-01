@@ -1,7 +1,7 @@
 from collections import Counter
 
 
-class Statis(list):
+class PyexcelList(list):
     def __init__(self, *args):
         list.__init__(self, *args)
 
