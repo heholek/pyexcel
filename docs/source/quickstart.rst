@@ -25,7 +25,7 @@ Get a list of dictionaries
    >>> sheet = p.get_sheet(file_content=content, file_type='csv')
    >>> sheet.save_as("your_file.xls")
 
-Suppose you want to process the :download:`following coffee data <coffee.csv>`:
+Suppose you want to process the :download:`following coffee data <coffee.csv>` (data source `coffee chart <https://cspinet.org/eating-healthy/ingredients-of-concern/caffeine-chart>`_ on the center for science in the public interest):
 
 .. pyexcel-table::
 
