@@ -14,6 +14,7 @@ class Plotter(object):
         except ImportError:
             pass
 
+        # to detect svg, jpeg, png
         for file_type in ['svg', 'jpeg', 'png']:
             setattr(self.__class__, file_type, make_graphics(file_type))
 

@@ -112,7 +112,7 @@ def test_html_representation():
 def test_svg_representation():
     array = [['a', 'b'], [1, 2]]
     sheet = Sheet(array)
-    io = sheet.plot()
+    io = sheet.plot
     assert io._repr_svg_() is not None
 
 

@@ -222,18 +222,6 @@ class PyexcelObject(object):
         """
         return StreamAttribute(self)
 
-    def __repr__(self):
-        if PY2:
-            default_encoding = sys.getdefaultencoding()
-            if default_encoding == "ascii":
-                result = self.texttable
-                return result.encode('utf-8')
-
-        return self.texttable
-
-    def __str__(self):
-        return self.__repr__()
-
     def save_to_memory(self, file_type, **keywords):
         """Save the content to memory
 
@@ -246,7 +234,8 @@ class PyexcelObject(object):
         """
         raise NotImplementedError("save to memory is not implemented")
 
-    def plot(self, **keywords):
+    @property
+    def plot(self):
         """
         Visualize the data
 
@@ -259,10 +248,22 @@ class PyexcelObject(object):
         chart_type:string
            'bar' by default. other chart types are subjected to plugins.
         """
-        return Plotter(self, **keywords)
+        return Plotter(self)
 
     def _repr_html_(self):
         return self.html
+
+    def __repr__(self):
+        if PY2:
+            default_encoding = sys.getdefaultencoding()
+            if default_encoding == "ascii":
+                result = self.texttable
+                return result.encode('utf-8')
+
+        return self.texttable
+
+    def __str__(self):
+        return self.__repr__()
 
 
 class SheetMeta(PyexcelObject):

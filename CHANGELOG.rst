@@ -40,6 +40,26 @@ Updated
 #. `pyexcel.Sheet.to_records()`, `pyexcel.get_records`, `pyexcel.Sheet.records`
    returns a generator instead of a static array of dictionary.
 
+0.5.6 - 23.10.2017
+--------------------------------------------------------------------------------
+
+#. `#105 <https://github.com/pyexcel/pyexcel/issues/105>`_, remove gease
+   from setup_requires, introduced by 0.5.5.
+#. removed testing against python 2.6
+
+0.5.5 - 20.10.2017
+--------------------------------------------------------------------------------
+
+#. `#103 <https://github.com/pyexcel/pyexcel/issues/103>`_, include LICENSE file
+   in MANIFEST.in, meaning LICENSE file will appear in the released tar ball.
+
+0.5.4 - 27.09.2017
+--------------------------------------------------------------------------------
+
+#. `#100 <https://github.com/pyexcel/pyexcel/issues/100>`_, Sheet.to_dict() gets
+   out of range error because there is only one row.
+#. Updated the baseline of pyexcel-io to 0.5.1.
+
 0.5.3 - 01-08-2017
 --------------------------------------------------------------------------------
 
