@@ -26,6 +26,7 @@ Added
 #. Sheet.column.column_name, Sheet.row.row_name is added to provide a short
    cut for Sheet.column['column name'], Sheet.row['row name']. In total,
    4 characters less in typing.
+#. plotting functions using echarts are integrated.
 
 Updated
 ********************************************************************************
