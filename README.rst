@@ -5,7 +5,7 @@ pyexcel - Let you focus on data, instead of file formats
 .. image:: https://raw.githubusercontent.com/pyexcel/pyexcel.github.io/master/images/patreon.png
    :target: https://www.patreon.com/pyexcel
 
-.. image:: https://api.travis-ci.org/pyexcel/pyexcel.svg?branch=master
+.. image:: https://travis-ci.org/pyexcel/pyexcel.svg?branch=master
    :target: http://travis-ci.org/pyexcel/pyexcel
 
 .. image:: https://codecov.io/gh/pyexcel/pyexcel/branch/master/graph/badge.svg
@@ -184,6 +184,7 @@ Available Plugins
    Package name              Supported file formats  Dependencies     Python versions
    ======================== ======================= ================= ==================
    `pyexcel-xlsxw`_         xlsx(write only)        `XlsxWriter`_     Python 2 and 3
+   `pyexcel-xlsxr`_         xlsx(read only)         lxml              same as above
    `pyexcel-odsr`_          read only for ods, fods lxml              same as above
    `pyexcel-htmlr`_         html(read only)         lxml,html5lib     same as above
    ======================== ======================= ================= ==================
@@ -196,6 +197,7 @@ Available Plugins
 .. _pyexcel-ods3: https://github.com/pyexcel/pyexcel-ods3
 .. _pyexcel-odsr: https://github.com/pyexcel/pyexcel-odsr
 .. _pyexcel-xlsxw: https://github.com/pyexcel/pyexcel-xlsxw
+.. _pyexcel-xlsxr: https://github.com/pyexcel/pyexcel-xlsxr
 .. _pyexcel-htmlr: https://github.com/pyexcel/pyexcel-htmlr
 
 .. _xlrd: https://github.com/python-excel/xlrd

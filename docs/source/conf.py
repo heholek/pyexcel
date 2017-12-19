@@ -14,11 +14,9 @@ extensions = [
     'sphinxcontrib.spelling',
     'sphinxcontrib.excel'
 ]
-
 intersphinx_mapping = {
     'xlrd': ('http://xlrd.readthedocs.io/en/latest/', None)
 }
-spelling_word_list_filename = 'spelling_wordlist.txt'
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
