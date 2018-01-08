@@ -22,3 +22,6 @@ targets:
   - "docs/source/index.rst": "docs/source/index.rst.jj2"
   - "pyexcel/__version__.py": version.txt
   - "docs/source/iodrivers.rst": "docs/source/iodrivers.rst.jj2"
+  - output: CHANGELOG.rst
+    configuration: changelog.yml
+    template: CHANGELOG.rst.jj2
