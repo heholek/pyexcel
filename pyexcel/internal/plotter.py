@@ -39,7 +39,7 @@ def make_graphics(file_type):
 def get_content(class_instance):
     content = class_instance.getvalue()
     if PY2:
-        content.decode('utf-8')
+        content = content.decode('utf-8')
     return content
 
 
