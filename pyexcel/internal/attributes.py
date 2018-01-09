@@ -8,9 +8,7 @@
     :license: New BSD License
 """
 import pyexcel.constants as constants
-from pyexcel_io.constants import DB_DJANGO, DB_SQL
 
-NO_DOT_NOTATION = (DB_DJANGO, DB_SQL)
 
 ATTRIBUTE_REGISTRY = {
     constants.SHEET: {
@@ -26,7 +24,17 @@ ATTRIBUTE_REGISTRY = {
 }
 
 
-def register_an_attribute(target, action, attr):
+def register_book_attribute(target, action, attr):
+    from .meta import BookMeta
+    register_an_attribute(BookMeta, target, action, attr)
+
+
+def register_sheet_attribute(target, action, attr):
+    from .meta import SheetMeta
+    register_an_attribute(SheetMeta, target, action, attr)
+
+
+def register_an_attribute(meta_cls, target, action, attr):
     """Register a file type as an attribute"""
     from .meta import SheetMeta, BookMeta
 
@@ -34,12 +42,6 @@ def register_an_attribute(target, action, attr):
         # No registration required
         return
     ATTRIBUTE_REGISTRY[target][action].add(attr)
-    if target == 'book':
-        meta_cls = BookMeta
-    elif target == 'sheet':
-        meta_cls = SheetMeta
-    else:
-        raise Exception("Known target: %s" % target)
 
     if action == constants.READ_ACTION:
         meta_cls.register_input(attr)

@@ -11,7 +11,8 @@ import pyexcel_io.constants as io_constants
 
 import pyexcel.constants as constants
 import pyexcel.exceptions as exceptions
-from pyexcel.internal.attributes import register_an_attribute
+from pyexcel.internal.attributes import register_book_attribute
+from pyexcel.internal.attributes import register_sheet_attribute
 from lml.plugin import PluginManager
 
 
@@ -113,7 +114,12 @@ class SourcePluginManager(PluginManager):
             for attr in attributes:
                 if attr in NO_DOT_NOTATION:
                     continue
-                register_an_attribute(target, action, attr)
+                if target == 'book':
+                    register_book_attribute(target, action, attr)
+                elif target == 'sheet':
+                    register_sheet_attribute(target, action, attr)
+                else:
+                    raise Exception("Known target: %s" % target)
                 debug_attribute += "%s " % attr
                 self.keywords[attr] = plugin_info.key
                 anything = True
