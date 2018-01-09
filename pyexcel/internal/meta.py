@@ -17,6 +17,7 @@ from pyexcel.internal.core import get_sheet_stream
 from pyexcel.internal.core import save_sheet
 from pyexcel.internal.core import save_book
 from pyexcel.internal.plotter import Plotter
+from pyexcel.internal.utils import make_a_property
 from pyexcel._compact import append_doc
 import pyexcel.docstrings as docs
 
@@ -95,81 +96,44 @@ def book_importer(attribute=None):
     return custom_book_importer
 
 
-def default_presenter(attribute=None):
-    """a default method for missing renderer method
-
-    for example, the support to write data in a specific file type
-    is missing but the support to read data exists
-    """
-    def none_presenter(_, **__):
-        """docstring is assigned a few lines down the line"""
-        raise NotImplementedError("%s getter is not defined." % attribute)
-    none_presenter.__doc__ = "%s getter is not defined." % attribute
-    return none_presenter
-
-
-def default_importer(attribute=None):
-    """a default method for missing parser method
-
-    for example, the support to read data in a specific file type
-    is missing but the support to write data exists
-    """
-    def none_importer(_x, _y, **_z):
-        """docstring is assigned a few lines down the line"""
-        raise NotImplementedError("%s setter is not defined." % attribute)
-    none_importer.__doc__ = "%s setter is not defined." % attribute
-    return none_importer
-
-
-def _annotate_pyexcel_object_attribute(
-        cls, file_type, presenter_func=sheet_presenter,
-        input_func=default_importer,
+def attribute(
+        cls, file_type,
         instance_name="Sheet",
-        description=constants.OUT_FILE_TYPE_DOC_STRING):
+        description=constants.OUT_FILE_TYPE_DOC_STRING, **keywords):
     """
     create custom attributes for each class
     """
-    getter = presenter_func(file_type)
-    setter = input_func(file_type)
-    file_type_property = property(
-        # note:
-        # without fget, fset, pypy 5.4.0 crashes randomly.
-        fget=getter, fset=setter,
-        doc=description.format(file_type,
-                               instance_name))
-    if '.' in file_type:
-        attribute = file_type.replace('.', '_')
-    else:
-        attribute = file_type
-    setattr(cls, attribute, file_type_property)
-    setattr(cls, 'get_%s' % attribute, getter)
-    setattr(cls, 'set_%s' % attribute, setter)
+    doc_string = description.format(file_type, instance_name)
+    make_a_property(cls, file_type, doc_string, **keywords)
 
 
-REGISTER_PRESENTATION = _annotate_pyexcel_object_attribute
+REGISTER_PRESENTATION = partial(
+    attribute,
+    getter_func=sheet_presenter,
+    description=constants.OUT_FILE_TYPE_DOC_STRING)
 REGISTER_BOOK_PRESENTATION = partial(
-    _annotate_pyexcel_object_attribute,
-    presenter_func=book_presenter,
-    instance_name="Book")
+    attribute,
+    getter_func=book_presenter,
+    instance_name="Book",
+    description=constants.OUT_FILE_TYPE_DOC_STRING)
 REGISTER_INPUT = partial(
-    _annotate_pyexcel_object_attribute,
-    presenter_func=default_presenter,
-    input_func=importer,
+    attribute,
+    setter_func=importer,
     description=constants.IN_FILE_TYPE_DOC_STRING)
 REGISTER_BOOK_INPUT = partial(
-    _annotate_pyexcel_object_attribute,
-    presenter_func=default_presenter,
-    input_func=book_importer,
+    attribute,
     instance_name="Book",
+    setter_func=book_importer,
     description=constants.IN_FILE_TYPE_DOC_STRING)
 REGISTER_IO = partial(
-    _annotate_pyexcel_object_attribute,
-    input_func=importer,
+    attribute,
+    getter_func=sheet_presenter,
+    setter_func=importer,
     description=constants.IO_FILE_TYPE_DOC_STRING)
 REGISTER_BOOK_IO = partial(
-    _annotate_pyexcel_object_attribute,
-    presenter_func=book_presenter,
-    input_func=book_importer,
+    attribute,
+    getter_func=book_presenter,
+    setter_func=book_importer,
     instance_name="Book",
     description=constants.IO_FILE_TYPE_DOC_STRING)
 

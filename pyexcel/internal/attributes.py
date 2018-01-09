@@ -36,7 +36,6 @@ def register_sheet_attribute(target, action, attr):
 
 def register_an_attribute(meta_cls, target, action, attr):
     """Register a file type as an attribute"""
-    from .meta import SheetMeta, BookMeta
 
     if attr in ATTRIBUTE_REGISTRY[target][constants.RW_ACTION]:
         # No registration required
