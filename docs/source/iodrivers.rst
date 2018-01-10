@@ -92,5 +92,3 @@ Write with constant memory
 *********************************
 
 **xlsx** by `pyexcel-xlsxw`_ can write big data with constant memory consumption.
-
-
