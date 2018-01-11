@@ -64,6 +64,7 @@ pyexcel.Sheet
       ~Sheet.get_xls
       ~Sheet.get_xlsm
       ~Sheet.get_xlsx
+      ~Sheet.group_rows_by_column
       ~Sheet.init
       ~Sheet.map
       ~Sheet.name_columns_by_row
@@ -75,7 +76,6 @@ pyexcel.Sheet
       ~Sheet.number_of_columns
       ~Sheet.number_of_rows
       ~Sheet.paste
-      ~Sheet.plot
       ~Sheet.rcolumns
       ~Sheet.region
       ~Sheet.register_input
@@ -167,6 +167,7 @@ pyexcel.Sheet
       ~Sheet.pdf
       ~Sheet.pipe
       ~Sheet.plain
+      ~Sheet.plot
       ~Sheet.records
       ~Sheet.rownames
       ~Sheet.rst

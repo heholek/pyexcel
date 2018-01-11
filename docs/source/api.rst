@@ -150,6 +150,7 @@ Save changes
    Book.save_as
    Book.save_to_memory
    Book.save_to_database
+   Book.save_to_django_models
 
 Sheet
 =====
@@ -313,3 +314,4 @@ Save changes
    Sheet.save_as
    Sheet.save_to_memory
    Sheet.save_to_database
+   Sheet.save_to_django_model

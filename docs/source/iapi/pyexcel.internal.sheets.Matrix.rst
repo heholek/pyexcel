@@ -66,7 +66,6 @@ pyexcel.internal.sheets.Matrix
       ~Matrix.number_of_columns
       ~Matrix.number_of_rows
       ~Matrix.paste
-      ~Matrix.plot
       ~Matrix.rcolumns
       ~Matrix.region
       ~Matrix.register_input
@@ -150,6 +149,7 @@ pyexcel.internal.sheets.Matrix
       ~Matrix.pdf
       ~Matrix.pipe
       ~Matrix.plain
+      ~Matrix.plot
       ~Matrix.records
       ~Matrix.rst
       ~Matrix.simple

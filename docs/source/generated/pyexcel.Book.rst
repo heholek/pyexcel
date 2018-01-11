@@ -50,7 +50,6 @@ pyexcel.Book
       ~Book.init
       ~Book.load_from_sheets
       ~Book.number_of_sheets
-      ~Book.plot
       ~Book.register_input
       ~Book.register_io
       ~Book.register_presentation
@@ -126,6 +125,7 @@ pyexcel.Book
       ~Book.pdf
       ~Book.pipe
       ~Book.plain
+      ~Book.plot
       ~Book.records
       ~Book.rst
       ~Book.simple
