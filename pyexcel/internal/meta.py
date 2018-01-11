@@ -232,6 +232,9 @@ class PyexcelObject(object):
 
 class SheetMeta(PyexcelObject):
     """Annotate sheet attributes"""
+    register_io = classmethod(REGISTER_IO)
+    register_presentation = classmethod(REGISTER_PRESENTATION)
+    register_input = classmethod(REGISTER_INPUT)
 
     @append_doc(docs.SAVE_AS_OPTIONS)
     def save_as(self, filename, **keywords):
@@ -283,13 +286,12 @@ class SheetMeta(PyexcelObject):
                    auto_commit=auto_commit)
 
 
-setattr(SheetMeta, "register_io", classmethod(REGISTER_IO))
-setattr(SheetMeta, "register_presentation", classmethod(REGISTER_PRESENTATION))
-setattr(SheetMeta, "register_input", classmethod(REGISTER_INPUT))
-
-
 class BookMeta(PyexcelObject):
     """Annotate book attributes"""
+
+    register_io = classmethod(REGISTER_BOOK_IO)
+    register_presentation = classmethod(REGISTER_BOOK_PRESENTATION)
+    register_input = classmethod(REGISTER_BOOK_INPUT)
 
     @append_doc(docs.SAVE_AS_OPTIONS)
     def save_as(self, filename, **keywords):
@@ -364,13 +366,6 @@ class BookMeta(PyexcelObject):
                   initializers=initializers,
                   mapdicts=mapdicts,
                   auto_commit=auto_commit)
-
-
-setattr(BookMeta, "register_io", classmethod(REGISTER_BOOK_IO))
-setattr(BookMeta, "register_presentation",
-        classmethod(REGISTER_BOOK_PRESENTATION))
-setattr(BookMeta, "register_input",
-        classmethod(REGISTER_BOOK_INPUT))
 
 
 def _get_book(**keywords):
