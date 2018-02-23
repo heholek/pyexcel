@@ -1,4 +1,4 @@
-import pyexcel as pe
+import pyexcel as p
 from base import PyexcelBase, clean_up_files
 from base import create_sample_file1
 from base import create_generic_file
@@ -19,58 +19,58 @@ class TestReader:
 
     @raises(IndexError)
     def test_cell_value(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         value = r.cell_value(0, 1)
         assert value == 'b'
         value = r.cell_value(100, 100)
 
     def test_row_range(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         row_range = r.row_range()
         assert len(row_range) == 3
 
     def test_column_range(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         column_range = r.column_range()
         assert len(column_range) == 4
 
     @raises(ValueError)
     def test_named_column_at(self):
-        r = pe.SeriesReader(self.testfile)
+        r = p.SeriesReader(self.testfile)
         data = r.named_column_at('a')
         assert ['e', 'i'] == data
         r.named_column_at("A")
 
     def test_get_item_operator(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         value = r[0, 1]
         assert value == 'b'
 
     @raises(IndexError)
     def test_row_at(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         value = r.row_at(2)
         assert value == ['i', 'j', 1.1, 1]
         value = r.row_at(100)  # bang
 
     @raises(IndexError)
     def test_column_at(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         value = r.column_at(1)
         assert value == ['b', 'f', 'j']
         value = r.column_at(100)  # bang
 
-    @raises(pe.exceptions.FileTypeNotSupported)
+    @raises(p.exceptions.FileTypeNotSupported)
     def test_not_supported_file(self):
-        pe.Reader("test.sylk")
+        p.Reader("test.sylk")
 
     @raises(IndexError)
     def test_out_of_index(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         r.row[10000]
 
     def test_contains(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
 
         def f(row): return row[0] == 'a' and row[1] == 'b'
         assert r.contains(f) is True
@@ -111,7 +111,7 @@ class TestCSVReader2:
         create_sample_file1(self.testfile)
 
     def test_data_types(self):
-        r = pe.Reader(self.testfile)
+        r = p.Reader(self.testfile)
         result = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 1.1, 1]
         actual = list(r.enumerate())
         eq_(result, actual)
@@ -135,8 +135,8 @@ class TestCSVReaderDialect:
         for i in [0, 4, 8]:
             array = [i+1, i+2, i+3, i+4]
             table.append(array)
-        pe.save_as(dest_file_name=self.testfile, dest_delimiter=":",
-                   array=table)
+        p.save_as(dest_file_name=self.testfile, dest_delimiter=":",
+                  array=table)
 
     def test_delimiter(self):
         with open(self.testfile) as test_file:
@@ -148,7 +148,7 @@ class TestCSVReaderDialect:
             eq_(expected, content)
 
     def test_read_delimiter(self):
-        r = pe.Reader(self.testfile, delimiter=":")
+        r = p.Reader(self.testfile, delimiter=":")
         content = list(r)
         assert content == [
             [1, 2, 3, 4],
@@ -173,7 +173,7 @@ class TestXLSReader(PyexcelBase):
 
     @raises(ValueError)
     def test_wrong_sheet(self):
-        pe.load(self.testfile, "Noexistent Sheet")
+        p.load(self.testfile, "Noexistent Sheet")
 
     def tearDown(self):
         clean_up_files([self.testfile])
@@ -226,14 +226,14 @@ class TestSeriesReader3:
 
     def test_empty_series_reader(self):
         # debug this further
-        s = pe.Sheet()  # seriesreader is gone since v0.0.7
+        s = p.Sheet()  # seriesreader is gone since v0.0.7
         assert s.name == "pyexcel sheet"
         test_data = [
             [1, 2, 3],
             [4, 5, 6],
             ["Column 1", "Column 2", "Column 3"]
         ]
-        s.column += pe.internal.sheets.transpose(test_data)
+        s.column += p.internal.sheets.transpose(test_data)
         actual = s.array
         assert test_data == actual
         s.name_columns_by_row(2)
@@ -257,17 +257,17 @@ class TestSeriesReader4:
         create_generic_file(self.testfile, self.content)
 
     def test_content_is_read(self):
-        r = pe.SeriesReader(self.testfile)
+        r = p.SeriesReader(self.testfile)
         actual = list(r.rows())
         assert self.content[1:] == actual
 
     def test_headers(self):
-        r = pe.SeriesReader(self.testfile)
+        r = p.SeriesReader(self.testfile)
         actual = r.colnames
         assert self.content[0] == actual
 
     def test_named_column_at(self):
-        r = pe.SeriesReader(self.testfile)
+        r = p.SeriesReader(self.testfile)
         result = r.named_column_at("X")
         actual = {"X": [1, 1, 1, 1, 1]}
         eq_(result, actual["X"])
@@ -276,7 +276,7 @@ class TestSeriesReader4:
         """
         Series Reader will skip first row because it has column header
         """
-        r = pe.SeriesReader(self.testfile)
+        r = p.SeriesReader(self.testfile)
         value = r[0, 1]
         assert value == 2
 
@@ -298,26 +298,46 @@ class TestSeriesReader5:
         create_generic_file(self.testfile, self.content)
 
     def test_content_is_read(self):
-        r = pe.SeriesReader(self.testfile, series=4)
+        r = p.SeriesReader(self.testfile, series=4)
         actual = list(r.rows())
         self.content.pop(4)
         eq_(self.content, actual)
 
     def test_headers(self):
-        r = pe.SeriesReader(self.testfile, series=4)
+        r = p.SeriesReader(self.testfile, series=4)
         actual = r.colnames
         eq_(self.content[4], actual)
 
     def test_named_column_at(self):
-        r = pe.SeriesReader(self.testfile, series=4)
+        r = p.SeriesReader(self.testfile, series=4)
         result = r.named_column_at("X")
         actual = {"X": [1, 1, 1, 1, 1]}
         eq_(result, actual["X"])
 
     def test_get_item_operator(self):
-        r = pe.SeriesReader(self.testfile, series=4)
+        r = p.SeriesReader(self.testfile, series=4)
         value = r[0, 1]
         assert value == 2
 
     def tearDown(self):
         clean_up_files([self.testfile])
+
+
+def test_cell_value_boundary():
+    data = [
+        [0, 1],
+        [10, 11]
+    ]
+    sheet = p.Sheet(data)
+    value = sheet.cell_value(1, 1)
+    eq_(value, 11)
+
+
+@raises(IndexError)
+def test_cell_value_outside_boundary():
+    data = [
+        [0, 1],
+        [10, 11]
+    ]
+    sheet = p.Sheet(data)
+    sheet.cell_value(1, 2)
