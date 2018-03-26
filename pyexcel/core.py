@@ -82,10 +82,9 @@ def isave_as(**keywords):
     for field in constants.VALID_SHEET_PARAMETERS:
         if field in source_keywords:
             raise Exception(SAVE_AS_EXCEPTION)
-    if 'sheet_name' in dest_keywords:
-        output_sheet_name = dest_keywords['sheet_name']
     sheet = sources.get_sheet_stream(on_demand=True, **source_keywords)
-    sheet.name = output_sheet_name
+    if 'sheet_name' in dest_keywords:
+        sheet.name = dest_keywords['sheet_name']
     return sources.save_sheet(sheet, **dest_keywords)
 
 
