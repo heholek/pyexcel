@@ -61,7 +61,10 @@ def save_as(**keywords):
         if field in source_keywords:
             sheet_params[field] = source_keywords.pop(field)
     sheet_stream = sources.get_sheet_stream(**source_keywords)
-    sheet = Sheet(sheet_stream.payload, sheet_stream.name,
+    output_sheet_name = sheet_stream.name
+    if 'sheet_name' in dest_keywords:
+        output_sheet_name = dest_keywords['sheet_name']
+    sheet = Sheet(sheet_stream.payload, output_sheet_name,
                   **sheet_params)
     return sources.save_sheet(sheet, **dest_keywords)
 
@@ -79,7 +82,10 @@ def isave_as(**keywords):
     for field in constants.VALID_SHEET_PARAMETERS:
         if field in source_keywords:
             raise Exception(SAVE_AS_EXCEPTION)
+    if 'sheet_name' in dest_keywords:
+        output_sheet_name = dest_keywords['sheet_name']
     sheet = sources.get_sheet_stream(on_demand=True, **source_keywords)
+    sheet.name = output_sheet_name
     return sources.save_sheet(sheet, **dest_keywords)
 
 
@@ -241,7 +247,8 @@ def _split_keywords(**keywords):
     for key, value in keywords.items():
         result = re.match(STARTS_WITH_DEST, key)
         if result:
-            dest_keywords[result.group(1)] = value
+            __parameter = result.group(1)
+            dest_keywords[__parameter] = value
         else:
             source_keywords[key] = value
     return dest_keywords, source_keywords

@@ -462,3 +462,23 @@ def test_issue_100():
     sheet = p.Sheet(data)
     sheet.name_columns_by_row(0)
     eq_(sheet.to_dict(), {'a': [], 'b': []})
+
+
+def test_issue_126():
+    data = [[1]]
+    test_file = "issue_126.xls"
+    test_name = "doyoufindme"
+    p.save_as(array=data, dest_file_name=test_file, dest_sheet_name=test_name)
+    sheet = p.get_sheet(file_name=test_file)
+    eq_(sheet.name, test_name)
+    os.unlink(test_file)
+
+
+def test_issue_126_isave_as():
+    data = [[1]]
+    test_file = "issue_126.xls"
+    test_name = "doyoufindme"
+    p.isave_as(array=data, dest_file_name=test_file, dest_sheet_name=test_name)
+    sheet = p.get_sheet(file_name=test_file)
+    eq_(sheet.name, test_name)
+    os.unlink(test_file)
