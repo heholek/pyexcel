@@ -464,6 +464,47 @@ def test_issue_100():
     eq_(sheet.to_dict(), {'a': [], 'b': []})
 
 
+def test_issue_125():
+    book = p.Book()
+    book += p.Sheet([[1]], 'A')
+    book += p.Sheet([[2]], 'B')
+    eq_(book.sheet_names(), ['A', 'B'])
+    book.sort_sheets(reverse=True)
+    eq_(book.sheet_names(), ['B', 'A'])
+
+
+def test_issue_125_saving_the_order():
+    test_file = 'issue_125.xls'
+    book = p.Book()
+    book += p.Sheet([[1]], 'A')
+    book += p.Sheet([[2]], 'B')
+    eq_(book.sheet_names(), ['A', 'B'])
+    book.sort_sheets(reverse=True)
+    book.save_as(test_file)
+    book2 = p.get_book(file_name=test_file)
+    eq_(book2.sheet_names(), ['B', 'A'])
+    os.unlink(test_file)
+
+
+def test_issue_125_using_key():
+    test_file = 'issue_125.xls'
+    book = p.Book()
+    book += p.Sheet([[1]], 'A')
+    book += p.Sheet([[2]], 'B')
+    book += p.Sheet([[3]], 'C')
+
+    custom_order = {
+        'A': 1,
+        'B': 3,
+        'C': 2
+        }
+    book.sort_sheets(key=lambda x: custom_order[x])
+    book.save_as(test_file)
+    book2 = p.get_book(file_name=test_file)
+    eq_(book2.sheet_names(), ['A', 'C', 'B'])
+    os.unlink(test_file)
+
+
 def test_issue_126():
     data = [[1]]
     test_file = "issue_126.xls"

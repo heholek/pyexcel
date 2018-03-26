@@ -78,6 +78,9 @@ class Book(BookMeta):
     def __len__(self):
         return len(self.__name_array)
 
+    def sort_sheets(self, key=None, reverse=False):
+        self.__name_array = sorted(self.__name_array, key=key, reverse=reverse)
+
     def number_of_sheets(self):
         """
         Return the number of sheets
