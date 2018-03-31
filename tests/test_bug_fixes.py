@@ -36,7 +36,7 @@ def test_issue_03():
     data = [[1, 1]]
     sheet = p.Sheet(data, name=my_sheet_name)
     sheet.save_as(csv_file)
-    assert(os.path.exists(csv_file))
+    assert (os.path.exists(csv_file))
     sheet.save_as(xls_file)
     book = p.load_book(xls_file)
     assert book.sheet_names()[0] == my_sheet_name
@@ -46,13 +46,14 @@ def test_issue_03():
 
 def test_issue_06():
     import logging
+
     logger = logging.getLogger("test")
     logger.setLevel(logging.DEBUG)
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
     logger.addHandler(ch)
     output = StringIO()
-    book = p.Book({'hoja1': [['datos', 'de', 'prueba'], [1, 2, 3]], })
+    book = p.Book({'hoja1': [['datos', 'de', 'prueba'], [1, 2, 3]]})
     book.save_to_memory('csv', output)
     logger.debug(output.getvalue())
 
@@ -84,16 +85,18 @@ def test_issue_29():
         # error case
         ['2016-03-31 10:59', '0123', 'XS360_EU', '04566651561653122'],
         #  python types
-        [datetime(2016, 4, 15, 17, 52, 11), 123, False, 456193284757]
+        [datetime(2016, 4, 15, 17, 52, 11), 123, False, 456193284757],
     ]
     s = p.get_sheet(array=a)
-    content = dedent("""
+    content = dedent(
+        """
     pyexcel_sheet1:
     +------------------+------+----------+-------------------+
     | 2016-03-31 10:59 | 0123 | XS360_EU | 04566651561653122 |
     +------------------+------+----------+-------------------+
     | 15/04/16         | 123  | false    | 456193284757      |
-    +------------------+------+----------+-------------------+""")
+    +------------------+------+----------+-------------------+"""
+    )
     eq_(str(s), content.strip('\n'))
 
 
@@ -103,11 +106,12 @@ def test_issue_29_nominablesheet():
         # error case
         ['2016-03-31 10:59', '0123', 'XS360_EU', '04566651561653122'],
         #  python types
-        [datetime(2016, 4, 15, 17, 52, 11), 123, False, 456193284757]
+        [datetime(2016, 4, 15, 17, 52, 11), 123, False, 456193284757],
     ]
     s = p.get_sheet(array=a)
     s.name_columns_by_row(0)
-    content = dedent("""
+    content = dedent(
+        """
     pyexcel_sheet1:
     +------------------+--------+----------+-------------------+
     |       date       | number |   misc   |    long number    |
@@ -115,12 +119,14 @@ def test_issue_29_nominablesheet():
     | 2016-03-31 10:59 | 0123   | XS360_EU | 04566651561653122 |
     +------------------+--------+----------+-------------------+
     | 15/04/16         | 123    | false    | 456193284757      |
-    +------------------+--------+----------+-------------------+""")
+    +------------------+--------+----------+-------------------+"""
+    )
     eq_(str(s), content.strip('\n'))
 
 
 def test_issue_51_orderred_dict_in_records():
     from pyexcel.plugins.sources.pydata.records import RecordsReader
+
     records = []
     orderred_dict = OrderedDict()
     orderred_dict.update({"Zebra": 10})
@@ -140,6 +146,7 @@ def test_issue_51_orderred_dict_in_records():
 
 def test_issue_51_normal_dict_in_records():
     from pyexcel.plugins.sources.pydata.records import RecordsReader
+
     records = []
     orderred_dict = {}
     orderred_dict.update({"Zebra": 10})
@@ -167,6 +174,7 @@ def test_issue_55_unicode_in_headers():
 
 def test_issue_60_chinese_text_in_python_2_stdout():
     import sys
+
     data = [['这', '是', '中', '文'], ['这', '是', '中', '文']]
     sheet = p.Sheet(data)
     sys.stdout.write(repr(sheet))
@@ -174,6 +182,7 @@ def test_issue_60_chinese_text_in_python_2_stdout():
 
 def test_issue_60_chinese_text_in_python_2_stdout_on_book():
     import sys
+
     adict = {"Sheet 1": [['这', '是', '中', '文'], ['这', '是', '中', '文']]}
     book = p.Book()
     book.bookdict = adict
@@ -208,6 +217,7 @@ def test_issue_68():
 
 def test_issue_74():
     from decimal import Decimal
+
     data = [[Decimal("1.1")]]
     sheet = p.Sheet(data)
     table = sheet.texttable
@@ -217,16 +227,15 @@ def test_issue_74():
 
 def test_issue_76():
     from pyexcel._compact import StringIO
+
     tsv_stream = StringIO()
     tsv_stream.write('1\t2\t3\t4\n')
     tsv_stream.write('1\t2\t3\t4\n')
     tsv_stream.seek(0)
-    sheet = p.get_sheet(file_stream=tsv_stream, file_type='csv',
-                        delimiter='\t')
-    data = [
-        [1, 2, 3, 4],
-        [1, 2, 3, 4]
-    ]
+    sheet = p.get_sheet(
+        file_stream=tsv_stream, file_type='csv', delimiter='\t'
+    )
+    data = [[1, 2, 3, 4], [1, 2, 3, 4]]
     eq_(sheet.array, data)
 
 
@@ -262,7 +271,7 @@ def test_issue_83_file_handle_no_generator():
     test_files = [
         os.path.join("tests", "fixtures", "bug_01.csv"),
         os.path.join("tests", "fixtures", "test-single.csvz"),
-        os.path.join("tests", "fixtures", "date_field.xls")
+        os.path.join("tests", "fixtures", "date_field.xls"),
     ]
     for test_file in test_files:
         open_files_l1 = proc.open_files()
@@ -327,13 +336,10 @@ def test_issue_83_xls_file_handle():
 
 
 def test_issue_92_non_uniform_records():
-    records = [
-        {"a": 1},
-        {"b": 2},
-        {"c": 3}
-    ]
+    records = [{"a": 1}, {"b": 2}, {"c": 3}]
     sheet = p.get_sheet(records=records, custom_headers=['a', 'b', 'c'])
-    content = dedent("""
+    content = dedent(
+        """
     +---+---+---+
     | a | b | c |
     +---+---+---+
@@ -342,22 +348,18 @@ def test_issue_92_non_uniform_records():
     |   | 2 |   |
     +---+---+---+
     |   |   | 3 |
-    +---+---+---+""").strip("\n")
+    +---+---+---+"""
+    ).strip(
+        "\n"
+    )
     eq_(str(sheet.content), content)
 
 
 def test_issue_92_incomplete_records():
-    records = [
-        {
-            "a": 1,
-            "b": 2,
-            "c": 3
-        },
-        {"b": 2},
-        {"c": 3}
-    ]
+    records = [{"a": 1, "b": 2, "c": 3}, {"b": 2}, {"c": 3}]
     sheet = p.get_sheet(records=records)
-    content = dedent("""
+    content = dedent(
+        """
     +---+---+---+
     | a | b | c |
     +---+---+---+
@@ -366,31 +368,22 @@ def test_issue_92_incomplete_records():
     |   | 2 |   |
     +---+---+---+
     |   |   | 3 |
-    +---+---+---+""").strip("\n")
+    +---+---+---+"""
+    ).strip(
+        "\n"
+    )
     eq_(str(sheet.content), content)
 
 
 def test_issue_92_verify_save_as():
-    records = [
-        {
-            "a": 1,
-            "b": 2,
-            "c": 3
-        },
-        {"b": 2},
-        {"c": 3}
-    ]
+    records = [{"a": 1, "b": 2, "c": 3}, {"b": 2}, {"c": 3}]
     csv_io = p.save_as(records=records, dest_file_type='csv')
     content = "a,b,c\r\n1,2,3\r\n,2,\r\n,,3\r\n"
     eq_(csv_io.getvalue(), content)
 
 
 def test_issue_95_preserve_order_in_iget_orders():
-    test_data = [
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['4', '5', '6']
-    ]
+    test_data = [['a', 'b', 'c'], ['1', '2', '3'], ['4', '5', '6']]
 
     records = p.iget_records(array=test_data)
     result = []
@@ -399,22 +392,13 @@ def test_issue_95_preserve_order_in_iget_orders():
             result.append([key, value])
 
     expected = [
-        ['a', '1'],
-        ['b', '2'],
-        ['c', '3'],
-        ['a', '4'],
-        ['b', '5'],
-        ['c', '6']
+        ['a', '1'], ['b', '2'], ['c', '3'], ['a', '4'], ['b', '5'], ['c', '6']
     ]
     eq_(result, expected)
 
 
 def test_issue_95_preserve_custom_order_in_iget_orders():
-    test_data = [
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['4', '5', '6']
-    ]
+    test_data = [['a', 'b', 'c'], ['1', '2', '3'], ['4', '5', '6']]
 
     records = p.iget_records(array=test_data, custom_headers=['c', 'a', 'b'])
     result = []
@@ -423,22 +407,13 @@ def test_issue_95_preserve_custom_order_in_iget_orders():
             result.append([key, value])
 
     expected = [
-        ['c', '3'],
-        ['a', '1'],
-        ['b', '2'],
-        ['c', '6'],
-        ['a', '4'],
-        ['b', '5']
+        ['c', '3'], ['a', '1'], ['b', '2'], ['c', '6'], ['a', '4'], ['b', '5']
     ]
     eq_(result, expected)
 
 
 def test_issue_95_preserve_order_in_get_orders():
-    test_data = [
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['4', '5', '6']
-    ]
+    test_data = [['a', 'b', 'c'], ['1', '2', '3'], ['4', '5', '6']]
 
     records = p.get_records(array=test_data)
     result = []
@@ -447,12 +422,7 @@ def test_issue_95_preserve_order_in_get_orders():
             result.append([key, value])
 
     expected = [
-        ['a', '1'],
-        ['b', '2'],
-        ['c', '3'],
-        ['a', '4'],
-        ['b', '5'],
-        ['c', '6']
+        ['a', '1'], ['b', '2'], ['c', '3'], ['a', '4'], ['b', '5'], ['c', '6']
     ]
     eq_(result, expected)
 
@@ -493,11 +463,7 @@ def test_issue_125_using_key():
     book += p.Sheet([[2]], 'B')
     book += p.Sheet([[3]], 'C')
 
-    custom_order = {
-        'A': 1,
-        'B': 3,
-        'C': 2
-        }
+    custom_order = {'A': 1, 'B': 3, 'C': 2}
     book.sort_sheets(key=lambda x: custom_order[x])
     book.save_as(test_file)
     book2 = p.get_book(file_name=test_file)

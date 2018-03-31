@@ -39,10 +39,7 @@ def do_book_read_stringio(file_name):
 
 
 def do_write_stringio(file_type):
-    data = [
-        [1, 2, 3],
-        [4, 5, 6]
-    ]
+    data = [[1, 2, 3], [4, 5, 6]]
     io = pe.save_as(dest_file_type=file_type, array=data)
     r = pe.get_sheet(file_type=file_type, file_content=io.getvalue())
     result = [1, 2, 3, 4, 5, 6]
@@ -51,12 +48,9 @@ def do_write_stringio(file_type):
 
 
 def do_write_stringio2(file_type):
-    data = [
-        [1, 2, 3],
-        [4, 5, 6]
-    ]
+    data = [[1, 2, 3], [4, 5, 6]]
     r = pe.Sheet(data)
-    getter = getattr(r, "get_"+file_type)
+    getter = getattr(r, "get_" + file_type)
     content = getter()
     r = pe.load_from_memory(file_type, content)
     result = [1, 2, 3, 4, 5, 6]
@@ -65,6 +59,7 @@ def do_write_stringio2(file_type):
 
 
 class TestIO:
+
     @raises(IOError)
     def test_wrong_io_input(self):
         pe.Reader(1000)
@@ -109,12 +104,7 @@ class TestIO:
         do_write_stringio2('xlsm')
 
     def test_book_output_stringio(self):
-        data = {
-            "Sheet 1": [
-                [1, 2, 3],
-                [4, 5, 6]
-            ]
-        }
+        data = {"Sheet 1": [[1, 2, 3], [4, 5, 6]]}
         io = pe.save_book_as(dest_file_type="xlsm", bookdict=data)
         b = pe.load_book_from_memory("xlsm", io.getvalue())
         result = [1, 2, 3, 4, 5, 6]
@@ -122,12 +112,7 @@ class TestIO:
         eq_(result, actual)
 
     def test_book_save_to_stringio(self):
-        data = {
-            "Sheet 1": [
-                [1, 2, 3],
-                [4, 5, 6]
-            ]
-        }
+        data = {"Sheet 1": [[1, 2, 3], [4, 5, 6]]}
         book = pe.Book(data)
         io = BytesIO()
         book.save_to_memory("xlsm", io)

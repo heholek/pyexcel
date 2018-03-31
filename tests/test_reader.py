@@ -6,6 +6,7 @@ from nose.tools import raises, eq_
 
 
 class TestReader:
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -72,7 +73,9 @@ class TestReader:
     def test_contains(self):
         r = p.Reader(self.testfile)
 
-        def f(row): return row[0] == 'a' and row[1] == 'b'
+        def f(row):
+            return row[0] == 'a' and row[1] == 'b'
+
         assert r.contains(f) is True
 
     def tearDown(self):
@@ -83,6 +86,7 @@ class TestCSVReader(PyexcelBase):
     """
     Test CSV reader
     """
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -99,6 +103,7 @@ class TestCSVReader(PyexcelBase):
 
 
 class TestCSVReader2:
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -133,10 +138,11 @@ class TestCSVReaderDialect:
         self.testfile = "testcsv.csv"
         table = []
         for i in [0, 4, 8]:
-            array = [i+1, i+2, i+3, i+4]
+            array = [i + 1, i + 2, i + 3, i + 4]
             table.append(array)
-        p.save_as(dest_file_name=self.testfile, dest_delimiter=":",
-                  array=table)
+        p.save_as(
+            dest_file_name=self.testfile, dest_delimiter=":", array=table
+        )
 
     def test_delimiter(self):
         with open(self.testfile) as test_file:
@@ -150,16 +156,14 @@ class TestCSVReaderDialect:
     def test_read_delimiter(self):
         r = p.Reader(self.testfile, delimiter=":")
         content = list(r)
-        assert content == [
-            [1, 2, 3, 4],
-            [5, 6, 7, 8],
-            [9, 10, 11, 12]]
+        assert content == [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
 
     def tearDown(self):
         clean_up_files([self.testfile])
 
 
 class TestXLSReader(PyexcelBase):
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -180,6 +184,7 @@ class TestXLSReader(PyexcelBase):
 
 
 class TestXLSXReader(PyexcelBase):
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -196,6 +201,7 @@ class TestXLSXReader(PyexcelBase):
 
 
 class TestXLSMReader(PyexcelBase):
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -212,6 +218,7 @@ class TestXLSMReader(PyexcelBase):
 
 
 class TestSeriesReader3:
+
     def setUp(self):
         self.testfile = "test.xlsx"
         self.content = [
@@ -220,7 +227,7 @@ class TestSeriesReader3:
             [2, 21, 22],
             [3, 31, 32],
             [4, 41, 42],
-            [5, 51, 52]
+            [5, 51, 52],
         ]
         create_generic_file(self.testfile, self.content)
 
@@ -229,9 +236,7 @@ class TestSeriesReader3:
         s = p.Sheet()  # seriesreader is gone since v0.0.7
         assert s.name == "pyexcel sheet"
         test_data = [
-            [1, 2, 3],
-            [4, 5, 6],
-            ["Column 1", "Column 2", "Column 3"]
+            [1, 2, 3], [4, 5, 6], ["Column 1", "Column 2", "Column 3"]
         ]
         s.column += p.internal.sheets.transpose(test_data)
         actual = s.array
@@ -244,6 +249,7 @@ class TestSeriesReader3:
 
 
 class TestSeriesReader4:
+
     def setUp(self):
         self.testfile = "test.xls"
         self.content = [
@@ -252,7 +258,7 @@ class TestSeriesReader4:
             [1, 2, 3],
             [1, 2, 3],
             [1, 2, 3],
-            [1, 2, 3]
+            [1, 2, 3],
         ]
         create_generic_file(self.testfile, self.content)
 
@@ -285,6 +291,7 @@ class TestSeriesReader4:
 
 
 class TestSeriesReader5:
+
     def setUp(self):
         self.testfile = "test.xls"
         self.content = [
@@ -293,7 +300,7 @@ class TestSeriesReader5:
             [1, 2, 3],
             [1, 2, 3],
             ["X", "Y", "Z"],
-            [1, 2, 3]
+            [1, 2, 3],
         ]
         create_generic_file(self.testfile, self.content)
 
@@ -324,10 +331,7 @@ class TestSeriesReader5:
 
 
 def test_cell_value_boundary():
-    data = [
-        [0, 1],
-        [10, 11]
-    ]
+    data = [[0, 1], [10, 11]]
     sheet = p.Sheet(data)
     value = sheet.cell_value(1, 1)
     eq_(value, 11)
@@ -335,9 +339,6 @@ def test_cell_value_boundary():
 
 @raises(IndexError)
 def test_cell_value_outside_boundary():
-    data = [
-        [0, 1],
-        [10, 11]
-    ]
+    data = [[0, 1], [10, 11]]
     sheet = p.Sheet(data)
     sheet.cell_value(1, 2)

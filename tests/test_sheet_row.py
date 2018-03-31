@@ -4,12 +4,13 @@ from nose.tools import raises, eq_
 
 
 class TestSheetRow:
+
     def setUp(self):
         self.data = [
             ["Row 0", -1, -2, -3],
             ["Row 1", 1, 2, 3],
             ["Row 2", 4, 5, 6],
-            ["Row 3", 7, 8, 9]
+            ["Row 3", 7, 8, 9],
         ]
 
     def test_formatter_by_named_row(self):
@@ -33,8 +34,7 @@ class TestSheetRow:
     @raises(NotImplementedError)
     def test_rownames3(self):
         custom_rows = ["R0", "R1", "R2", "R3"]
-        Sheet(self.data, "test", name_rows_by_column=0,
-              rownames=custom_rows)
+        Sheet(self.data, "test", name_rows_by_column=0, rownames=custom_rows)
 
     def test_formatter_by_named_row_2(self):
         s = Sheet(self.data, "test")
@@ -66,10 +66,7 @@ class TestSheetRow:
     def test_add(self):
         s = Sheet(self.data, "test")
         s.name_rows_by_column(0)
-        data = OrderedDict({
-            "Row 5": [10, 11, 12]
-            }
-        )
+        data = OrderedDict({"Row 5": [10, 11, 12]})
         s = s.row + data
         assert s.row["Row 5"] == [10, 11, 12]
 
@@ -131,6 +128,7 @@ class TestSheetRow:
 
         def locator(index, _):
             return index % 2 == 0
+
         del sheet.row[locator]
         assert sheet.number_of_rows() == 2
 

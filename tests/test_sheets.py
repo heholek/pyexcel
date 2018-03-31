@@ -25,6 +25,7 @@ def test_sheet_len():
 
 
 class TestFormatter:
+
     def setUp(self):
         self.data = [
             [1, 2, 3, 4, 5, 6, 7, 8],
@@ -32,7 +33,7 @@ class TestFormatter:
             [1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8],
             ["1.1", "2.2", "3.3", "4.4", "5.5", "6.6", "7,7", "8.8"],
             [2, 3, 4, 5, 6, 7, 8, 9],
-            ["2", "3", "4", "5", "6", "7", "8", "9"]
+            ["2", "3", "4", "5", "6", "7", "8", "9"],
         ]
 
     def test_apply_row_formatter(self):
@@ -63,7 +64,8 @@ class TestFormatter:
             [2.2, 4.4, 6.6, 8.8],
             ['2.2', '4.4', '6.6', '8.8'],
             [3, 5, 7, 9],
-            ['3', '5', '7', '9']]
+            ['3', '5', '7', '9'],
+        ]
         eq_(sheet.array, expected)
 
     def test_column_locator2(self):
@@ -74,6 +76,7 @@ class TestFormatter:
 
         def locator(index, _):
             return index % 2 == 0
+
         del sheet.column[locator]
         expected = [
             [2, 4, 6, 8],
@@ -81,7 +84,8 @@ class TestFormatter:
             [2.2, 4.4, 6.6, 8.8],
             ['2.2', '4.4', '6.6', '8.8'],
             [3, 5, 7, 9],
-            ['3', '5', '7', '9']]
+            ['3', '5', '7', '9'],
+        ]
         eq_(sheet.array, expected)
 
     @raises(IndexError)
@@ -106,19 +110,21 @@ class TestFormatter:
 
 
 class TestGroupBy:
+
     def setUp(self):
         self.sample_data = [
             ["date", "am/pm"],
             ["22/09/2017", "morning"],
             ["22/09/2017", "afternoon"],
             ["23/09/2017", "morning"],
-            ["23/09/2017", "afternoon"]
+            ["23/09/2017", "afternoon"],
         ]
 
     def test_column_name(self):
         sheet = Sheet(self.sample_data)
         book = sheet.group_rows_by_column("date")
-        expected = dedent("""
+        expected = dedent(
+            """
         22/09/2017:
         +------------+-----------+
         | date       | am/pm     |
@@ -134,13 +140,17 @@ class TestGroupBy:
         | 23/09/2017 | morning   |
         +------------+-----------+
         | 23/09/2017 | afternoon |
-        +------------+-----------+""").strip('\n')
+        +------------+-----------+"""
+        ).strip(
+            '\n'
+        )
         eq_(str(book), expected)
 
     def test_column_index(self):
         sheet = Sheet(self.sample_data)
         book = sheet.group_rows_by_column(0)
-        expected = dedent("""
+        expected = dedent(
+            """
         22/09/2017:
         +------------+-----------+
         | 22/09/2017 | morning   |
@@ -156,27 +166,24 @@ class TestGroupBy:
         date:
         +------+-------+
         | date | am/pm |
-        +------+-------+""").strip('\n')
+        +------+-------+"""
+        ).strip(
+            '\n'
+        )
         eq_(str(book), expected)
 
 
 class TestUniquenessOfNames:
+
     def test_column_names(self):
         data = [
-            [1, 2, 3],
-            [4, 5, 6],
-            ["Column", "Column", "Column"],
-            [7, 8, 9]
+            [1, 2, 3], [4, 5, 6], ["Column", "Column", "Column"], [7, 8, 9]
         ]
         sheet = Sheet(data, name_columns_by_row=2)
         assert sheet.colnames == ["Column", "Column-1", "Column-2"]
 
     def test_column_names2(self):
-        data = [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]
-        ]
+        data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
         sheet = Sheet(data)
         sheet.colnames = ["Column", "Column", "Column"]
         assert sheet.colnames == ["Column", "Column-1", "Column-2"]
@@ -186,24 +193,20 @@ class TestUniquenessOfNames:
             ["Row", -1, -2, -3],
             ["Row", 1, 2, 3],
             ["Row", 4, 5, 6],
-            ["Row", 7, 8, 9]
+            ["Row", 7, 8, 9],
         ]
         sheet = Sheet(data, name_rows_by_column=0)
         assert sheet.rownames == ["Row", "Row-1", "Row-2", "Row-3"]
 
     def test_row_names2(self):
-        data = [
-            [-1, -2, -3],
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9]
-        ]
+        data = [[-1, -2, -3], [1, 2, 3], [4, 5, 6], [7, 8, 9]]
         sheet = Sheet(data)
         sheet.rownames = ["Row"] * 4
         assert sheet.rownames == ["Row", "Row-1", "Row-2", "Row-3"]
 
 
 class TestSheetRegion:
+
     def test_region(self):
         data = [
             # 0 1  2  3  4 5   6
@@ -211,15 +214,11 @@ class TestSheetRegion:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.region([1, 1], [4, 5])
-        expected = [
-            [22, 23, 24, 25],
-            [32, 33, 34, 35],
-            [42, 43, 44, 45]
-        ]
+        expected = [[22, 23, 24, 25], [32, 33, 34, 35], [42, 43, 44, 45]]
         assert data == expected
 
     def test_cut_region(self):
@@ -229,22 +228,18 @@ class TestSheetRegion:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.cut([1, 1], [4, 5])
-        expected = [
-            [22, 23, 24, 25],
-            [32, 33, 34, 35],
-            [42, 43, 44, 45]
-        ]
+        expected = [[22, 23, 24, 25], [32, 33, 34, 35], [42, 43, 44, 45]]
         expected2 = [
             # 0 1  2  3  4 5   6
             [1, 2, 3, 4, 5, 6, 7],  # 0
             [21, '', '', '', '', 26, 27],
             [31, '', '', '', '', 36, 37],
             [41, '', '', '', '', 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         assert data == expected
         assert s.to_array() == expected2
@@ -256,7 +251,7 @@ class TestSheetRegion:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.cut([1, 1], [4, 5])
@@ -266,7 +261,7 @@ class TestSheetRegion:
             [32, 33, 34, 35, '', 26, 27],
             [42, 43, 44, 45, '', 36, 37],
             [41, '', '', '', '', 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]
+            [51, 52, 53, 54, 55, 56, 57],
         ]
         assert expected == s.to_array()
 
@@ -277,7 +272,7 @@ class TestSheetRegion:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.cut([1, 1], [4, 5])
@@ -287,34 +282,27 @@ class TestSheetRegion:
             [32, 33, 34, 35, '', 26, 27],
             [42, 43, 44, 45, '', 36, 37],
             [41, '', '', '', '', 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]
+            [51, 52, 53, 54, 55, 56, 57],
         ]
         assert expected == s.to_array()
 
 
 class TestLoadingFunction:
+
     def test_load_from_dict(self):
-        content = {
-            "a": [1, 2, 3, 5],
-            "b": [4, 5, 6, 7, 8]
-        }
+        content = {"a": [1, 2, 3, 5], "b": [4, 5, 6, 7, 8]}
         sheet = load_from_dict(content, name_columns_by_row=0)
         assert sorted(sheet.colnames) == sorted(content.keys())
 
     def test_load_from_records(self):
-        content = [
-            {"a": 1, "b": 2},
-            {"a": 3, "b": 4}
-        ]
+        content = [{"a": 1, "b": 2}, {"a": 3, "b": 4}]
         sheet = load_from_records(content, name_columns_by_row=0)
-        expected = {
-            "a": [1, 3],
-            "b": [2, 4]
-        }
+        expected = {"a": [1, 3], "b": [2, 4]}
         assert sheet.to_dict() == expected
 
 
 class TestSheetTops:
+
     def test_top(self):
         data = [
             # 0 1  2  3  4 5   6
@@ -322,20 +310,15 @@ class TestSheetTops:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.top(1)
-        expected = [
-            [1, 2, 3, 4, 5, 6, 7]
-        ]
+        expected = [[1, 2, 3, 4, 5, 6, 7]]
         assert data.array == expected
 
     def test_top_with_colnames(self):
-        data = [
-            ["column 1", "column 2"],
-            [1, 2]
-        ]
+        data = [["column 1", "column 2"], [1, 2]]
         s = Sheet(copy.deepcopy(data))
         s.name_columns_by_row(0)
         top_sheet = s.top()
@@ -348,13 +331,11 @@ class TestSheetTops:
             [21, 22, 23, 24, 25, 26, 27],
             [31, 32, 33, 34, 35, 36, 37],
             [41, 42, 43, 44, 45, 46, 47],
-            [51, 52, 53, 54, 55, 56, 57]  # 4
+            [51, 52, 53, 54, 55, 56, 57],  # 4
         ]
         s = Sheet(data)
         data = s.top_left(rows=1, columns=1)
-        expected = [
-            [1]
-        ]
+        expected = [[1]]
         assert data.array == expected
 
     def test_top_left_with_colnames(self):
@@ -376,7 +357,7 @@ class TestSheetTops:
             [11, 2, 3, 4, 5],
             [21, 2, 3, 4, 5],
             [31, 2, 3, 4, 5],
-            [41, 2, 3, 4, 5]
+            [41, 2, 3, 4, 5],
         ]
         eq_(top_sheet.array, expected)
 
@@ -400,6 +381,6 @@ class TestSheetTops:
             ["row 2", 11, 2, 3, 4, 5],
             ["row 3", 21, 2, 3, 4, 5],
             ["row 4", 31, 2, 3, 4, 5],
-            ["row 5", 41, 2, 3, 4, 5]
+            ["row 5", 41, 2, 3, 4, 5],
         ]
         eq_(top_sheet.array, expected)

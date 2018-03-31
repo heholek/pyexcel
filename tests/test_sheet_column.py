@@ -4,12 +4,13 @@ from nose.tools import raises, eq_
 
 
 class TestSheetColumn:
+
     def setUp(self):
         self.data = [
             ["Column 1", "Column 2", "Column 3"],
             [1, 2, 3],
             [4, 5, 6],
-            [7, 8, 9]
+            [7, 8, 9],
         ]
 
     def test_formatter_by_named_column(self):
@@ -30,9 +31,7 @@ class TestSheetColumn:
     def test_add(self):
         s = Sheet(self.data, "test")
         s.name_columns_by_row(0)
-        data = OrderedDict({
-            "Column 4": [10, 11, 12]
-        })
+        data = OrderedDict({"Column 4": [10, 11, 12]})
         s = s.column + data
         eq_(s.column.Column_4, [10, 11, 12])
 
@@ -84,12 +83,13 @@ class TestSheetColumn:
 
 
 class TestSheetColumn2:
+
     def setUp(self):
         self.data = [
             [1, 2, 3],
             [4, 5, 6],
             ["Column 1", "Column 2", "Column 3"],
-            [7, 8, 9]
+            [7, 8, 9],
         ]
 
     def test_series(self):
@@ -108,8 +108,9 @@ class TestSheetColumn2:
     @raises(NotImplementedError)
     def test_series3(self):
         custom_columns = ["C1", "C2", "C3"]
-        Sheet(self.data, "test", colnames=custom_columns,
-              name_columns_by_row=0)
+        Sheet(
+            self.data, "test", colnames=custom_columns, name_columns_by_row=0
+        )
 
     def test_formatter_by_named_column(self):
         s = Sheet(self.data, "test")
@@ -126,10 +127,7 @@ class TestSheetColumn2:
     def test_add(self):
         s = Sheet(self.data, "test")
         s.name_columns_by_row(2)
-        data = OrderedDict({
-            "Column 4": [10, 11, 12]
-            }
-        )
+        data = OrderedDict({"Column 4": [10, 11, 12]})
         s = s.column + data
         assert s.column["Column 4"] == [10, 11, 12]
 

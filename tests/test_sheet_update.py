@@ -1,13 +1,16 @@
 import pyexcel as pe
-from base import (create_sample_file1,
-                  create_sample_file1_series,
-                  clean_up_files,
-                  PyexcelSheetRWBase)
+from base import (
+    create_sample_file1,
+    create_sample_file1_series,
+    clean_up_files,
+    PyexcelSheetRWBase,
+)
 from _compact import OrderedDict
 from nose.tools import raises, eq_
 
 
 class TestReader:
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -29,6 +32,7 @@ class TestReader:
 
 
 class TestReader2(PyexcelSheetRWBase):
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -46,6 +50,7 @@ class TestReader2(PyexcelSheetRWBase):
 
 
 class TestSeriesReader:
+
     def setUp(self):
         """
         Make a test csv file as:
@@ -61,10 +66,7 @@ class TestSeriesReader:
     @raises(TypeError)
     def test_extend_columns(self):
         r = self.testclass(self.testfile)
-        columns = [
-            ['p', 'a', 'd'],
-            ['c1', 'c2', 'c3'],
-            ['x1', 'x2', 'x4']]
+        columns = [['p', 'a', 'd'], ['c1', 'c2', 'c3'], ['x1', 'x2', 'x4']]
         r.extend_columns(columns)
 
     def test_extend_columns2(self):
