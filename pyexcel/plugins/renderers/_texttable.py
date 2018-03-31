@@ -19,6 +19,7 @@ import pyexcel.constants as constants
 
 class TextTableRenderer(Renderer):
     """Default texttable presetation"""
+
     def render_sheet(self, sheet):
         content = render_text_table(sheet, self._write_title)
         self._stream.write(content)
@@ -35,6 +36,7 @@ def render_text_table(sheet, write_title):
         data = list(data)
     if len(data) == 0:
         return content
+
     table.set_cols_dtype(['t'] * len(data[0]))
     if len(sheet.colnames) > 0:
         table.set_chars(['-', '|', '+', '='])
@@ -52,5 +54,6 @@ def _cleanse_a_row(row):
     for item in row:
         if item == constants.DEFAULT_NA:
             yield " "
+
         else:
             yield to_format(str, item)

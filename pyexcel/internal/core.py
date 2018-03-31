@@ -57,6 +57,7 @@ def _save_any(a_source, instance):
         content_stream = a_source.get_content()
         _seek_at_zero(content_stream)
         return content_stream
+
     except AttributeError:
         return None
 
@@ -69,6 +70,7 @@ def _seek_at_zero(a_stream):
             pass
     else:
         import io
+
         try:
             a_stream.seek(0)
         except io.UnsupportedOperation:

@@ -23,11 +23,13 @@ FILE_TYPE_MIME_TABLE = {
     "application/vnd.ms-excel": "xls",
     XLSX: "xlsx",
     "application/vnd.ms-excel.sheet.macroenabled.12": "xlsm",
-    "text/html": "html"
+    "text/html": "html",
 }
 
 
 # pylint: disable=W0223
+
+
 class HttpSource(AbstractSource):
     """
     Multiple sheet data source via http protocol
@@ -54,8 +56,7 @@ class HttpSource(AbstractSource):
             file_type = _get_file_type_from_url(self.__url)
         parser_library = self._keywords.get('parser_library', None)
         aparser = PARSER.get_a_plugin(file_type, parser_library)
-        sheets = aparser.parse_file_stream(connection,
-                                           **self._keywords)
+        sheets = aparser.parse_file_stream(connection, **self._keywords)
         return sheets
 
     def get_source_info(self):

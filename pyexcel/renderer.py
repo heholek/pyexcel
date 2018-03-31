@@ -77,28 +77,32 @@ class Renderer(AbstractRenderer):
     def get_io(self):
         return compact.StringIO()
 
-    def render_sheet_to_file(self, file_name, sheet,
-                             write_title=True, **keywords):
+    def render_sheet_to_file(
+        self, file_name, sheet, write_title=True, **keywords
+    ):
         self.set_write_title(write_title)
         with open(file_name, self.WRITE_FLAG) as outfile:
             self.set_output_stream(outfile)
             self.render_sheet(sheet, **keywords)
 
-    def render_sheet_to_stream(self, file_stream, sheet,
-                               write_title=True, **keywords):
+    def render_sheet_to_stream(
+        self, file_stream, sheet, write_title=True, **keywords
+    ):
         self.set_write_title(write_title)
         self.set_output_stream(file_stream)
         self.render_sheet(sheet, **keywords)
 
-    def render_book_to_file(self, file_name, book,
-                            write_title=True, **keywords):
+    def render_book_to_file(
+        self, file_name, book, write_title=True, **keywords
+    ):
         self.set_write_title(write_title)
         with open(file_name, self.WRITE_FLAG) as outfile:
             self.set_output_stream(outfile)
             self.render_book(book, **keywords)
 
-    def render_book_to_stream(self, file_stream, book,
-                              write_title=True, **keywords):
+    def render_book_to_stream(
+        self, file_stream, book, write_title=True, **keywords
+    ):
         self.set_write_title(write_title)
         self.set_output_stream(file_stream)
         self.render_book(book, **keywords)
@@ -139,6 +143,7 @@ class BinaryRenderer(Renderer):
     """
     Renderer pyexcel data into a binary object
     """
+
     def __init__(self, file_type):
         Renderer.__init__(self, file_type)
         if compact.PY3_AND_ABOVE:
@@ -150,10 +155,13 @@ class BinaryRenderer(Renderer):
 
 
 # pylint: disable=W0223
+
+
 class DbRenderer(AbstractRenderer):
     """
     Close some functions that will not be used
     """
+
     def get_io(self):
         raise Exception("No io for this renderer")
 

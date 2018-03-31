@@ -56,6 +56,7 @@ class MemorySourceMixin(object):
 
     And it is desirable to get its internal stream
     """
+
     def get_content(self):
         """Get memory repsentation of the formatted data
 

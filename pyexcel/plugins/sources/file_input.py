@@ -14,9 +14,12 @@ from pyexcel.source import AbstractSource
 
 
 # pylint: disable=W0223
+
+
 class ReadExcelFromFile(AbstractSource):
     """Pick up 'file_name' field and do single sheet based read and write
     """
+
     def __init__(self, file_name=None, parser_library=None, **keywords):
         self.__file_name = file_name
 

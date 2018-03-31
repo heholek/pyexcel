@@ -16,7 +16,7 @@ PyexcelPluginChain(__name__).add_a_source(
     targets=['sheet', 'book'],
     actions=['read'],
     attributes=['url'],
-    key='url'
+    key='url',
 ).add_an_input_source(
     relative_plugin_class_path='file_input.ReadExcelFromFile',
     fields=['file_name'],
@@ -29,7 +29,7 @@ PyexcelPluginChain(__name__).add_a_source(
     targets=['sheet', 'book'],
     actions=['read'],
     key='file_type',
-    attributes=PARSER.get_all_file_types
+    attributes=PARSER.get_all_file_types,
 ).add_a_output_source(
     relative_plugin_class_path='file_output.WriteSheetToFile',
     fields=['file_name'],
@@ -62,7 +62,7 @@ PyexcelPluginChain(__name__).add_a_source(
     targets=['sheet', 'book'],
     actions=['write', 'read'],
     key='bookdict',
-    attributes=['bookdict']
+    attributes=['bookdict'],
 ).add_a_source(
     relative_plugin_class_path='pydata.dictsource.DictSource',
     fields=['adict'],

@@ -2,11 +2,13 @@ from collections import Counter
 
 
 class PyexcelList(list):
+
     def __init__(self, *args):
         list.__init__(self, *args)
 
     def value_counts(self):
         from pyexcel import get_sheet
+
         c = Counter(self)
         sheet = get_sheet(adict=c)
         sheet.rownames = ['N/A', 'counts']
@@ -15,5 +17,6 @@ class PyexcelList(list):
     @property
     def plot(self):
         from pyexcel import get_sheet
+
         sheet = get_sheet(array=[self])
         return sheet.plot

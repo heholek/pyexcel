@@ -53,6 +53,7 @@ class Book(BookMeta):
         """
         if sheets is None:
             return
+
         keys = sheets.keys()
         if not isinstance(sheets, compact.OrderedDict):
             # if the end user does not care about the order
@@ -118,12 +119,14 @@ class Book(BookMeta):
                 self.__name_array = list(self.__sheets.keys())
             else:
                 raise IndexError
+
         elif isinstance(sheet, str):
             if sheet in self.__name_array:
                 del self.__sheets[sheet]
                 self.__name_array = list(self.__sheets.keys())
             else:
                 raise KeyError
+
         else:
             raise TypeError
 
@@ -131,6 +134,7 @@ class Book(BookMeta):
         """Override operator[]"""
         if isinstance(key, int):
             return self.sheet_by_index(key)
+
         else:
             return self.sheet_by_name(key)
 
@@ -176,6 +180,7 @@ class Book(BookMeta):
             content[new_key] = other.array
         else:
             raise TypeError
+
         output = Book()
         output.load_from_sheets(content)
         return output
@@ -199,8 +204,7 @@ class Book(BookMeta):
                 if new_key in self.__name_array:
                     uid = local_uuid()
                     new_key = "%s_%s" % (name, uid)
-                self.__sheets[new_key] = Sheet(other[name].array,
-                                               new_key)
+                self.__sheets[new_key] = Sheet(other[name].array, new_key)
         elif isinstance(other, Sheet):
             new_key = other.name
             if new_key in self.__name_array:
@@ -209,6 +213,7 @@ class Book(BookMeta):
             self.__sheets[new_key] = Sheet(other.array, new_key)
         else:
             raise TypeError
+
         self.__name_array = list(self.__sheets.keys())
         return self
 
@@ -225,10 +230,13 @@ def to_book(bookstream):
     """
     if isinstance(bookstream, Book):
         return bookstream
+
     else:
-        return Book(bookstream.to_dict(),
-                    filename=bookstream.filename,
-                    path=bookstream.path)
+        return Book(
+            bookstream.to_dict(),
+            filename=bookstream.filename,
+            path=bookstream.path,
+        )
 
 
 def local_uuid():

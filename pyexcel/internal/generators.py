@@ -26,6 +26,7 @@ class SheetStream(object):
     "renderer" of pyexcel's signature functions.
 
     """
+
     def __init__(self, name, payload):
         self.name = name
         self.payload = payload
@@ -55,6 +56,7 @@ class BookStream(object):
     its internal repesentation of sheet objects. Because `SheetStream`
     does not read data into memory, it is memory efficient.
     """
+
     def __init__(self, sheets=None, filename="memory", path=None):
         """Book constructor
 
@@ -80,6 +82,7 @@ class BookStream(object):
         """
         if sheets is None:
             return
+
         self.sheets = OrderedDict()
         keys = sheets.keys()
         if not isinstance(sheets, OrderedDict):

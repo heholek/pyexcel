@@ -76,12 +76,14 @@ if you need to pass on more parameters, you could use::
 
     {1}.set_{0}(the_io_stream_in_{0}_format, **keywords)
 """
-VALID_SHEET_PARAMETERS = ['name_columns_by_row',
-                          'name_rows_by_column',
-                          'colnames',
-                          'rownames',
-                          'transpose_before',
-                          'transpose_after']
+VALID_SHEET_PARAMETERS = [
+    'name_columns_by_row',
+    'name_rows_by_column',
+    'colnames',
+    'rownames',
+    'transpose_before',
+    'transpose_after',
+]
 
 # for sources
 # targets

@@ -14,7 +14,8 @@ from .cookbook import (
     merge_csv_to_a_book,
     merge_all_to_a_book,
     split_a_book,
-    extract_a_sheet_from_a_book)
+    extract_a_sheet_from_a_book,
+)
 from .core import (
     get_array,
     iget_array,
@@ -27,7 +28,8 @@ from .core import (
     save_as,
     isave_as,
     save_book_as,
-    isave_book_as)
+    isave_book_as,
+)
 from .book import Book
 from .sheet import Sheet
 from .internal.garbagecollector import free_resources
@@ -41,6 +43,6 @@ from .deprecated import (
     Reader,
     SeriesReader,
     ColumnSeriesReader,
-    BookReader
+    BookReader,
 )
 from .__version__ import __version__

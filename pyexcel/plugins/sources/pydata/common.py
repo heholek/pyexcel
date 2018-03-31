@@ -16,6 +16,7 @@ import pyexcel.constants as constants
 
 class _FakeIO(object):
     """emulates a stream object"""
+
     def __init__(self):
         self.__value = None
 
@@ -29,6 +30,8 @@ class _FakeIO(object):
 
 
 # pylint: disable=W0223
+
+
 class ArrayReader(SheetReader):
     """read data from an array via pyexcel-io interface"""
 
@@ -42,6 +45,8 @@ class ArrayReader(SheetReader):
 
 
 # pylint: disable=W0223
+
+
 class RecordsReader(ArrayReader):
     """read data from a records via pyexcel-io interface
 
@@ -76,6 +81,8 @@ class RecordsReader(ArrayReader):
 
 
 # pylint: disable=W0223
+
+
 class DictReader(ArrayReader):
     """read data from a dictionary via pyexcel-io interface"""
 
@@ -91,9 +98,10 @@ class DictReader(ArrayReader):
         if isinstance(self._native_sheet[keys[0]], list):
             sorted_values = (self._native_sheet[key] for key in keys)
             for row in zip_longest(
-                    *sorted_values,
-                    fillvalue=constants.DEFAULT_NA):
+                *sorted_values, fillvalue=constants.DEFAULT_NA
+            ):
                 yield row
+
         else:
             row = [self._native_sheet[key] for key in keys]
             yield row

@@ -25,6 +25,7 @@ import pyexcel.docstrings as docs
 def make_presenter(source_getter, attribute=None):
     """make a custom presentation method for each file types
     """
+
     def custom_presenter(self, **keywords):
         """docstring is assigned a few lines down the line"""
         keyword = SOURCE.get_keyword_for_parameter(attribute)
@@ -39,6 +40,7 @@ def make_presenter(source_getter, attribute=None):
             content = None
 
         return content
+
     custom_presenter.__doc__ = "Get data in %s format" % attribute
     return custom_presenter
 
@@ -60,6 +62,7 @@ def book_presenter(attribute=None):
 def importer(attribute=None):
     """make a custom input method for sheet
     """
+
     def custom_importer1(self, content, **keywords):
         """docstring is assigned a few lines down the line"""
         sheet_params = {}
@@ -73,8 +76,8 @@ def importer(attribute=None):
         else:
             keywords[keyword] = content
         named_content = get_sheet_stream(**keywords)
-        self.init(named_content.payload,
-                  named_content.name, **sheet_params)
+        self.init(named_content.payload, named_content.name, **sheet_params)
+
     custom_importer1.__doc__ = "Set data in %s format" % attribute
     return custom_importer1
 
@@ -82,6 +85,7 @@ def importer(attribute=None):
 def book_importer(attribute=None):
     """make a custom input method for book
     """
+
     def custom_book_importer(self, content, **keywords):
         """docstring is assigned a few lines down the line"""
         keyword = SOURCE.get_keyword_for_parameter(attribute)
@@ -92,14 +96,18 @@ def book_importer(attribute=None):
             keywords[keyword] = content
         sheets, filename, path = _get_book(**keywords)
         self.init(sheets=sheets, filename=filename, path=path)
+
     custom_book_importer.__doc__ = "Set data in %s format" % attribute
     return custom_book_importer
 
 
 def attribute(
-        cls, file_type,
-        instance_name="Sheet",
-        description=constants.OUT_FILE_TYPE_DOC_STRING, **keywords):
+    cls,
+    file_type,
+    instance_name="Sheet",
+    description=constants.OUT_FILE_TYPE_DOC_STRING,
+    **keywords
+):
     """
     create custom attributes for each class
     """
@@ -110,36 +118,43 @@ def attribute(
 REGISTER_PRESENTATION = partial(
     attribute,
     getter_func=sheet_presenter,
-    description=constants.OUT_FILE_TYPE_DOC_STRING)
+    description=constants.OUT_FILE_TYPE_DOC_STRING,
+)
 REGISTER_BOOK_PRESENTATION = partial(
     attribute,
     getter_func=book_presenter,
     instance_name="Book",
-    description=constants.OUT_FILE_TYPE_DOC_STRING)
+    description=constants.OUT_FILE_TYPE_DOC_STRING,
+)
 REGISTER_INPUT = partial(
     attribute,
     setter_func=importer,
-    description=constants.IN_FILE_TYPE_DOC_STRING)
+    description=constants.IN_FILE_TYPE_DOC_STRING,
+)
 REGISTER_BOOK_INPUT = partial(
     attribute,
     instance_name="Book",
     setter_func=book_importer,
-    description=constants.IN_FILE_TYPE_DOC_STRING)
+    description=constants.IN_FILE_TYPE_DOC_STRING,
+)
 REGISTER_IO = partial(
     attribute,
     getter_func=sheet_presenter,
     setter_func=importer,
-    description=constants.IO_FILE_TYPE_DOC_STRING)
+    description=constants.IO_FILE_TYPE_DOC_STRING,
+)
 REGISTER_BOOK_IO = partial(
     attribute,
     getter_func=book_presenter,
     setter_func=book_importer,
     instance_name="Book",
-    description=constants.IO_FILE_TYPE_DOC_STRING)
+    description=constants.IO_FILE_TYPE_DOC_STRING,
+)
 
 
 class StreamAttribute(object):
     """Provide access to get_*_stream methods"""
+
     def __init__(self, cls):
         self.cls = cls
 
@@ -150,6 +165,7 @@ class StreamAttribute(object):
 
 class PyexcelObject(object):
     """parent class for pyexcel.Sheet and pyexcel.Book"""
+
     @property
     def stream(self):
         """Return a stream in which the content is properly encoded
@@ -240,19 +256,17 @@ class SheetMeta(PyexcelObject):
     def save_as(self, filename, **keywords):
         """Save the content to a named file
         """
-        return save_sheet(self, file_name=filename,
-                          **keywords)
+        return save_sheet(self, file_name=filename, **keywords)
 
     def save_to_memory(self, file_type, stream=None, **keywords):
-        stream = save_sheet(self, file_type=file_type, file_stream=stream,
-                            **keywords)
+        stream = save_sheet(
+            self, file_type=file_type, file_stream=stream, **keywords
+        )
         return stream
 
-    def save_to_django_model(self,
-                             model,
-                             initializer=None,
-                             mapdict=None,
-                             batch_size=None):
+    def save_to_django_model(
+        self, model, initializer=None, mapdict=None, batch_size=None
+    ):
         """Save to database table through django model
 
         :param model: a database model
@@ -261,14 +275,17 @@ class SheetMeta(PyexcelObject):
         :param batch_size: a parameter to Django concerning the size
                            for bulk insertion
         """
-        save_sheet(self,
-                   model=model, initializer=initializer,
-                   mapdict=mapdict, batch_size=batch_size)
+        save_sheet(
+            self,
+            model=model,
+            initializer=initializer,
+            mapdict=mapdict,
+            batch_size=batch_size,
+        )
 
-    def save_to_database(self, session, table,
-                         initializer=None,
-                         mapdict=None,
-                         auto_commit=True):
+    def save_to_database(
+        self, session, table, initializer=None, mapdict=None, auto_commit=True
+    ):
         """Save data in sheet to database table
 
         :param session: database session
@@ -278,12 +295,14 @@ class SheetMeta(PyexcelObject):
         :param auto_commit: by default, data is auto committed.
 
         """
-        save_sheet(self,
-                   session=session,
-                   table=table,
-                   initializer=initializer,
-                   mapdict=mapdict,
-                   auto_commit=auto_commit)
+        save_sheet(
+            self,
+            session=session,
+            table=table,
+            initializer=initializer,
+            mapdict=mapdict,
+            auto_commit=auto_commit,
+        )
 
 
 class BookMeta(PyexcelObject):
@@ -309,13 +328,14 @@ class BookMeta(PyexcelObject):
                        format, please pass an instance of StringIO. For xls,
                        xlsx, and ods, an instance of BytesIO.
         """
-        stream = save_book(self, file_type=file_type, file_stream=stream,
-                           **keywords)
+        stream = save_book(
+            self, file_type=file_type, file_stream=stream, **keywords
+        )
         return stream
 
-    def save_to_django_models(self, models,
-                              initializers=None, mapdicts=None,
-                              **keywords):
+    def save_to_django_models(
+        self, models, initializers=None, mapdicts=None, **keywords
+    ):
         """
         Save to database table through django model
 
@@ -334,15 +354,22 @@ class BookMeta(PyexcelObject):
         :param bulk_save: whether to use bulk_create or to use single save
                           per record
         """
-        save_book(self,
-                  models=models,
-                  initializers=initializers,
-                  mapdicts=mapdicts,
-                  **keywords)
+        save_book(
+            self,
+            models=models,
+            initializers=initializers,
+            mapdicts=mapdicts,
+            **keywords
+        )
 
-    def save_to_database(self, session, tables,
-                         initializers=None, mapdicts=None,
-                         auto_commit=True):
+    def save_to_database(
+        self,
+        session,
+        tables,
+        initializers=None,
+        mapdicts=None,
+        auto_commit=True,
+    ):
         """
         Save data in sheets to database tables
 
@@ -360,12 +387,14 @@ class BookMeta(PyexcelObject):
         :param auto_commit: by default, data is committed.
 
         """
-        save_book(self,
-                  session=session,
-                  tables=tables,
-                  initializers=initializers,
-                  mapdicts=mapdicts,
-                  auto_commit=auto_commit)
+        save_book(
+            self,
+            session=session,
+            tables=tables,
+            initializers=initializers,
+            mapdicts=mapdicts,
+            auto_commit=auto_commit,
+        )
 
 
 def _get_book(**keywords):

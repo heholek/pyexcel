@@ -37,14 +37,17 @@ if PY2:
 
     class Iterator(object):
         """Python 2 iterator"""
+
         def next(self):
             """Iterator interface get next value"""
             return type(self).__next__(self)
+
     irange = xrange
 else:
     from io import StringIO, BytesIO
     import urllib.request as request
     from itertools import zip_longest
+
     Iterator = object
     irange = range
     czip = zip
@@ -65,23 +68,29 @@ def is_string(atype):
     """find out if a type is str or not"""
     if atype == str:
         return True
+
     elif PY2:
         if atype == unicode:
             return True
+
     return False
 
 
 def deprecated(func, message="Deprecated!"):
     """Print deprecated message"""
+
     def inner(*arg, **keywords):
         """Print deperecated message"""
         warnings.warn(message, DeprecationWarning)
         return func(*arg, **keywords)
+
     return inner
 
 
 def append_doc(value):
+
     def _doc(func):
         func.__doc__ = dedent(func.__doc__) + '\n' + value
         return func
+
     return _doc

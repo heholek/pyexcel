@@ -43,6 +43,7 @@ class Matrix(SheetMeta):
                 self.__width, self.__array = uniform(array)
             except TypeError:
                 raise TypeError("Invalid two dimensional array")
+
         self.row = Row(self)
         self.column = Column(self)
         self.name = 'matrix'
@@ -59,6 +60,7 @@ class Matrix(SheetMeta):
         """The number of columns"""
         if self.number_of_rows() > 0:
             return self.__width
+
         else:
             return 0
 
@@ -85,12 +87,14 @@ class Matrix(SheetMeta):
             if new_value is None:
                 # get
                 return self.__array[row][column]
+
             else:
                 # set
                 self.__array[row][column] = new_value
         else:
             if new_value is None:
                 raise IndexError("Index out of range")
+
             else:
                 self.paste((row, column), [[new_value]])
 
@@ -100,9 +104,12 @@ class Matrix(SheetMeta):
         """
         if index in self.row_range():
             return PyexcelList(copy.deepcopy(self.__array[index]))
+
         elif index < 0 and utils.abs(index) in self.row_range():
-            return PyexcelList(copy.deepcopy(
-                self.__array[index+self.number_of_rows()]))
+            return PyexcelList(
+                copy.deepcopy(self.__array[index + self.number_of_rows()])
+            )
+
         else:
             raise IndexError(constants.MESSAGE_INDEX_OUT_OF_RANGE)
 
@@ -138,14 +145,15 @@ class Matrix(SheetMeta):
         nrows = self.number_of_rows()
         ncolumns = self.number_of_columns()
         if row_index < nrows and starting < ncolumns:
-            real_len = len(data_array)+starting
+            real_len = len(data_array) + starting
             end = min(real_len, ncolumns)
             for i in range(starting, end):
-                self.cell_value(row_index, i, data_array[i-starting])
+                self.cell_value(row_index, i, data_array[i - starting])
             if real_len > ncolumns:
                 left = ncolumns - starting
-                self.__array[row_index] = (self.__array[row_index] +
-                                           data_array[left:])
+                self.__array[row_index] = (
+                    self.__array[row_index] + data_array[left:]
+                )
             self.__width, self.__array = uniform(self.__array)
         else:
             raise IndexError(constants.MESSAGE_INDEX_OUT_OF_RANGE)
@@ -169,6 +177,7 @@ class Matrix(SheetMeta):
         """Deletes specified row indices"""
         if isinstance(row_indices, list) is False:
             raise IndexError
+
         if len(row_indices) > 0:
             unique_list = _unique(row_indices)
             sorted_list = sorted(unique_list, reverse=True)
@@ -185,11 +194,13 @@ class Matrix(SheetMeta):
             for i in self.row_range():
                 cell_array.append(self.cell_value(i, index))
             return cell_array
+
         elif index < 0 and utils.abs(index) in self.column_range():
             reverse_index = self.number_of_columns() + index
             for i in self.row_range():
                 cell_array.append(self.cell_value(i, reverse_index))
             return cell_array
+
         else:
             raise IndexError(constants.MESSAGE_INDEX_OUT_OF_RANGE)
 
@@ -216,13 +227,13 @@ class Matrix(SheetMeta):
         nrows = self.number_of_rows()
         ncolumns = self.number_of_columns()
         if column_index < ncolumns and starting < nrows:
-            real_len = len(data_array)+starting
+            real_len = len(data_array) + starting
             end = min(real_len, nrows)
             for i in range(starting, end):
-                self.cell_value(i, column_index, data_array[i-starting])
+                self.cell_value(i, column_index, data_array[i - starting])
             if real_len > nrows:
                 for i in range(nrows, real_len):
-                    new_row = [''] * column_index + [data_array[i-starting]]
+                    new_row = [''] * column_index + [data_array[i - starting]]
                     self.__array.append(new_row)
             self.__width, self.__array = uniform(self.__array)
         else:
@@ -243,6 +254,7 @@ class Matrix(SheetMeta):
         """
         if not isinstance(columns, list):
             raise TypeError(constants.MESSAGE_DATA_ERROR_DATA_TYPE_MISMATCH)
+
         incoming_data = columns
         if not compact.is_array_type(columns, list):
             incoming_data = [columns]
@@ -262,7 +274,7 @@ class Matrix(SheetMeta):
             base = current_nrows
             for i in range(0, delta):
                 new_array = [constants.DEFAULT_NA] * current_ncols
-                new_array += rows[base+i]
+                new_array += rows[base + i]
                 self.__array.append(new_array)
         self.__width, self.__array = uniform(self.__array)
 
@@ -410,16 +422,13 @@ class Matrix(SheetMeta):
         number_of_columns = self.number_of_columns()
         delta = starting_row - number_of_rows
         if delta > 0:
-            empty_row = [
-                [constants.DEFAULT_NA] * number_of_columns
-            ] * delta
+            empty_row = [[constants.DEFAULT_NA] * number_of_columns] * delta
             self._extend_row(empty_row)
         number_of_rows = self.number_of_rows()
         for index, row in enumerate(rows):
             set_index = starting_row + index
             if set_index < number_of_rows:
-                self._set_row_at(set_index, row,
-                                 starting=topleft_corner[1])
+                self._set_row_at(set_index, row, starting=topleft_corner[1])
             else:
                 real_row = [constants.DEFAULT_NA] * topleft_corner[1] + row
                 self._extend_row(real_row)
@@ -431,9 +440,9 @@ class Matrix(SheetMeta):
         for index, column in enumerate(columns):
             set_index = starting_column + index
             if set_index < number_of_columns:
-                self.set_column_at(set_index,
-                                   column,
-                                   starting=topleft_corner[0])
+                self.set_column_at(
+                    set_index, column, starting=topleft_corner[0]
+                )
             else:
                 real_column = [constants.DEFAULT_NA] * topleft_corner[0]
                 real_column += column
@@ -445,6 +454,7 @@ class Matrix(SheetMeta):
         """
         if isinstance(column_indices, list) is False:
             raise TypeError(constants.MESSAGE_DATA_ERROR_DATA_TYPE_MISMATCH)
+
         if len(column_indices) > 0:
             unique_list = _unique(column_indices)
             sorted_list = sorted(unique_list, reverse=True)
@@ -458,9 +468,11 @@ class Matrix(SheetMeta):
         """Override the operator to set items"""
         if isinstance(aset, tuple):
             return self.cell_value(aset[0], aset[1], cell_value)
+
         elif isinstance(aset, str):
             row, column = utils.excel_cell_position(aset)
             return self.cell_value(row, column, cell_value)
+
         else:
             raise IndexError
 
@@ -469,12 +481,15 @@ class Matrix(SheetMeta):
         from left to right"""
         if isinstance(aset, tuple):
             return self.cell_value(aset[0], aset[1])
+
         elif isinstance(aset, str):
             row, column = utils.excel_cell_position(aset)
             return self.cell_value(row, column)
+
         elif isinstance(aset, int):
             print(constants.MESSAGE_DEPRECATED_ROW_COLUMN)
             return self.row_at(aset)
+
         else:
             raise IndexError
 
@@ -483,6 +498,7 @@ class Matrix(SheetMeta):
         for row in self.rows():
             if predicate(row):
                 return True
+
         return False
 
     def transpose(self):
@@ -760,6 +776,7 @@ class Matrix(SheetMeta):
         :returns: a new book
         """
         from pyexcel.book import Book, local_uuid
+
         content = {}
         content[self.name] = self.__array
         if isinstance(other, Book):
@@ -780,6 +797,7 @@ class Matrix(SheetMeta):
             content[new_key] = other.get_internal_array()
         else:
             raise TypeError
+
         new_book = Book()
         new_book.load_from_sheets(content)
         return new_book
@@ -805,6 +823,7 @@ def longest_row_number(array):
     if len(array) > 0:
         # map runs len() against each member of the array
         return max(map(len, array))
+
     else:
         return 0
 
@@ -817,6 +836,7 @@ def uniform(array):
     width = longest_row_number(array)
     if width == 0:
         return 0, array
+
     else:
         for row in array:
             row_length = len(row)

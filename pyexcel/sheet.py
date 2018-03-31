@@ -32,14 +32,18 @@ class Sheet(Matrix):
     function is required.
 
     """
-    def __init__(self, sheet=None,
-                 name=constants.DEFAULT_NAME,
-                 name_columns_by_row=-1,
-                 name_rows_by_column=-1,
-                 colnames=None,
-                 rownames=None,
-                 transpose_before=False,
-                 transpose_after=False):
+
+    def __init__(
+        self,
+        sheet=None,
+        name=constants.DEFAULT_NAME,
+        name_columns_by_row=-1,
+        name_rows_by_column=-1,
+        colnames=None,
+        rownames=None,
+        transpose_before=False,
+        transpose_after=False,
+    ):
         """Constructor
 
         :param sheet: two dimensional array
@@ -60,17 +64,20 @@ class Sheet(Matrix):
             colnames=colnames,
             rownames=rownames,
             transpose_before=transpose_before,
-            transpose_after=transpose_after
+            transpose_after=transpose_after,
         )
 
-    def init(self, sheet=None,
-             name=constants.DEFAULT_NAME,
-             name_columns_by_row=-1,
-             name_rows_by_column=-1,
-             colnames=None,
-             rownames=None,
-             transpose_before=False,
-             transpose_after=False):
+    def init(
+        self,
+        sheet=None,
+        name=constants.DEFAULT_NAME,
+        name_columns_by_row=-1,
+        name_rows_by_column=-1,
+        colnames=None,
+        rownames=None,
+        transpose_before=False,
+        transpose_after=False,
+    ):
         """custom initialization functions
 
         examples::
@@ -113,16 +120,16 @@ class Sheet(Matrix):
         self.column = NamedColumn(self)
         if name_columns_by_row != -1:
             if colnames:
-                raise NotImplementedError(
-                    constants.MESSAGE_NOT_IMPLEMENTED_02)
+                raise NotImplementedError(constants.MESSAGE_NOT_IMPLEMENTED_02)
+
             self.name_columns_by_row(name_columns_by_row)
         else:
             if colnames:
                 self.__column_names = colnames
         if name_rows_by_column != -1:
             if rownames:
-                raise NotImplementedError(
-                    constants.MESSAGE_NOT_IMPLEMENTED_02)
+                raise NotImplementedError(constants.MESSAGE_NOT_IMPLEMENTED_02)
+
             self.name_rows_by_column(name_rows_by_column)
         else:
             if rownames:
@@ -185,6 +192,7 @@ class Sheet(Matrix):
         :returns: an instance of a Book
         """
         from pyexcel import Book
+
         groups = defaultdict(list)
 
         if isinstance(column_index_or_name, int):
@@ -270,9 +278,11 @@ class Sheet(Matrix):
         """
         Matrix.delete_columns(self, column_indices)
         if len(self.__column_names) > 0:
-            new_series = [self.__column_names[i]
-                          for i in range(0, len(self.__column_names))
-                          if i not in column_indices]
+            new_series = [
+                self.__column_names[i]
+                for i in range(0, len(self.__column_names))
+                if i not in column_indices
+            ]
             self.__column_names = new_series
 
     def delete_rows(self, row_indices):
@@ -282,9 +292,11 @@ class Sheet(Matrix):
         """
         Matrix.delete_rows(self, row_indices)
         if len(self.__row_names) > 0:
-            new_series = [self.__row_names[i]
-                          for i in range(0, len(self.__row_names))
-                          if i not in row_indices]
+            new_series = [
+                self.__row_names[i]
+                for i in range(0, len(self.__row_names))
+                if i not in row_indices
+            ]
             self.__row_names = new_series
 
     def delete_named_column_at(self, name):
@@ -351,7 +363,9 @@ class Sheet(Matrix):
             Matrix.extend_rows(self, incoming_data)
         elif len(self.rownames) > 0:
             raise TypeError(
-                constants.MESSAGE_DATA_ERROR_ORDEREDDICT_IS_EXPECTED)
+                constants.MESSAGE_DATA_ERROR_ORDEREDDICT_IS_EXPECTED
+            )
+
         else:
             Matrix.extend_rows(self, rows)
 
@@ -376,7 +390,9 @@ class Sheet(Matrix):
             Matrix.extend_columns(self, incoming_data)
         elif len(self.colnames) > 0:
             raise TypeError(
-                constants.MESSAGE_DATA_ERROR_ORDEREDDICT_IS_EXPECTED)
+                constants.MESSAGE_DATA_ERROR_ORDEREDDICT_IS_EXPECTED
+            )
+
         else:
             Matrix.extend_columns(self, columns)
 
@@ -385,8 +401,7 @@ class Sheet(Matrix):
         ret = []
         ret += list(self.rows())
         if len(self.rownames) > 0:
-            ret = [[value[0]] + value[1] for value in
-                   zip(self.rownames, ret)]
+            ret = [[value[0]] + value[1] for value in zip(self.rownames, ret)]
             if not compact.PY2:
                 ret = list(ret)
         if len(self.colnames) > 0:
@@ -413,6 +428,7 @@ class Sheet(Matrix):
             for row in self.rows():
                 the_dict = compact.OrderedDict(zip(headers, row))
                 yield the_dict
+
         elif len(self.rownames) > 0:
             if custom_headers:
                 headers = custom_headers
@@ -421,9 +437,9 @@ class Sheet(Matrix):
             for column in self.columns():
                 the_dict = compact.OrderedDict(zip(headers, column))
                 yield the_dict
+
         else:
-            raise ValueError(
-                constants.MESSAGE_DATA_ERROR_NO_SERIES)
+            raise ValueError(constants.MESSAGE_DATA_ERROR_NO_SERIES)
 
     def to_dict(self, row=False):
         """Returns a dictionary"""
@@ -436,6 +452,7 @@ class Sheet(Matrix):
                 the_dict.update(row)
         else:
             raise NotImplementedError("Not implemented")
+
         return the_dict
 
     def named_rows(self):
@@ -443,6 +460,7 @@ class Sheet(Matrix):
         for row_name in self.__row_names:
             try:
                 yield {row_name: self.row[row_name]}
+
             except IndexError:
                 yield {row_name: []}
 
@@ -451,6 +469,7 @@ class Sheet(Matrix):
         for column_name in self.__column_names:
             try:
                 yield {column_name: self.column[column_name]}
+
             except IndexError:
                 yield {column_name: []}
 
@@ -476,6 +495,7 @@ class Sheet(Matrix):
             else:
                 column = aset[1]
             return self.cell_value(row, column)
+
         else:
             return Matrix.__getitem__(self, aset)
 
@@ -500,6 +520,7 @@ class Sheet(Matrix):
 
 class _RepresentedString(object):
     """present in text"""
+
     def __init__(self, text):
         self.text = text
 

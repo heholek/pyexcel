@@ -36,6 +36,7 @@ def update_columns(infilename, column_dicts, outfilename=None):
         default_out_file = outfilename
     if os.path.exists(default_out_file):
         raise NotImplementedError(MESSAGE_WARNING)
+
     sheet = get_sheet(file_name=infilename, name_columns_by_row=0)
     series = sheet.colnames
     for k in column_dicts.keys():
@@ -58,6 +59,7 @@ def update_rows(infilename, row_dicts, outfilename=None):
         default_out_file = outfilename
     if os.path.exists(default_out_file):
         raise NotImplementedError(MESSAGE_WARNING)
+
     sheet = get_sheet(file_name=infilename, name_rows_by_column=0)
     series = sheet.rownames
     for k in row_dicts.keys():
@@ -72,6 +74,7 @@ def merge_files(file_array, outfilename=DEFAULT_OUT_FILE):
     """
     if os.path.exists(outfilename):
         raise NotImplementedError(MESSAGE_WARNING)
+
     content = []
     for file_name in file_array:
         sheet = get_sheet(file_name=file_name)
@@ -91,6 +94,7 @@ def merge_two_files(file1, file2, outfilename=DEFAULT_OUT_FILE):
     """
     if os.path.exists(outfilename):
         raise NotImplementedError(MESSAGE_WARNING)
+
     files = [file1, file2]
     merge_files(files, outfilename)
 
@@ -103,6 +107,7 @@ def merge_readers(reader_array, outfilename=DEFAULT_OUT_FILE):
     """
     if os.path.exists(outfilename):
         raise NotImplementedError(MESSAGE_WARNING)
+
     content = OrderedDict()
     for reader in reader_array:
         content.update(reader.dict)
@@ -117,6 +122,7 @@ def merge_two_readers(reader1, reader2, outfilename=DEFAULT_OUT_FILE):
     """
     if os.path.exists(outfilename):
         raise NotImplementedError(MESSAGE_WARNING)
+
     reader_array = [reader1, reader2]
     merge_readers(reader_array, outfilename)
 
